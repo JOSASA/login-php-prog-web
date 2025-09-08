@@ -1,0 +1,115 @@
+/* Reset básico */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+/* Fondo general */
+body {
+  background: linear-gradient(135deg, #667eea, #764ba2);
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+/* MAIN centrado */
+main {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex: 1;
+  padding: 20px;
+}
+
+/* Caja de registro */
+.check-in-area {
+  background: #fff;
+  padding: 40px 35px;
+  border-radius: 15px;
+  box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+  max-width: 400px;
+  width: 100%;
+  text-align: center;
+}
+
+/* Título */
+.titulo-logo h2 {
+  font-size: 28px;
+  margin-bottom: 25px;
+  color: #333;
+}
+
+/* Formulario */
+.check-in-form {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+/* Input con icono */
+.check-in-form label {
+  position: absolute;
+  margin: 12px 0 0 12px;
+  color: #888;
+}
+
+.check-in-form input {
+  width: 100%;
+  padding: 12px 12px 12px 38px;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  font-size: 15px;
+  transition: 0.3s ease;
+}
+
+.check-in-form input:focus {
+  border-color: #667eea;
+  outline: none;
+  box-shadow: 0 0 6px rgba(102, 126, 234, 0.4);
+}
+
+/* Botón */
+.check-in-form button {
+  padding: 12px;
+  background: #667eea;
+  color: #fff;
+  font-size: 16px;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.check-in-form button:hover {
+  background: #5563c1;
+}
+
+/* Link volver */
+.register-btn {
+  display: inline-block;
+  margin-top: 12px;
+  font-size: 14px;
+  color: #667eea;
+  text-decoration: none;
+  transition: 0.3s;
+}
+
+.register-btn:hover {
+  color: #764ba2;
+}
+
+/* Footer */
+.footer {
+  background: #fff;
+  padding: 15px;
+  text-align: center;
+  border-top: 1px solid #ddd;
+}
+
+.footer p {
+  font-size: 14px;
+  color: #666;
+}
