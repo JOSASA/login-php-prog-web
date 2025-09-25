@@ -2,50 +2,46 @@
 <html lang="en">
 
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Login</title>
-  <link rel="stylesheet" href="css/style2.css">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.3.0/css/all.min.css"
-    integrity="sha512-SzlrxWUlpfuzQ+pcUCosxcglQRNAq/DZjVsC0lE40xsADsfeQoEypE+enwcOiGjk/bSuGGKHEyjSoQ1zVisanQ=="
-    crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="./css/styleI.css">
+    <title>Document</title>
 </head>
 
 <body>
-  <!-- MAIN centrado -->
-  <main>
-    <div class="check-in-area">
-      <div class="titulo-logo">
-        <h2>LoGin</h2>
-      </div>
-      <!-- Formulario -->
-      <form action="php/autentication.php" method="post" class="check-in-form">
-        <label for="username">
-          <i class="fas fa-user"></i>
-        </label>
-        <input type="text" name="username" placeholder="User" id="username" required>
-        <label for="password">
-          <i class="fas fa-lock"></i>
-        </label>
-        <input type="password" name="password" placeholder="Password" id="password" required>
-        <!-- Botón de login -->
-        <button type="submit">
-          <i class="fas fa-sign-in-alt"></i> LogIn
-        </button>
-        <!-- Botón de registro -->
-        <a href="register.html" class="register-btn">
-          <i class="fas fa-user-plus"></i> Registrarse
-        </a>
-      </form>
-    </div>
-  </main>
+    <header>
+        <div class="container">
+            <div class="logo">
+                <ion-icon name="barbell-sharp"></ion-icon>
+                <span>E-Commerce</span>
+            </div>
 
-  <!-- Footer -->
-  <footer class="footer">
-    <div class="footer-elements">
-      <p>© 2025 - Tu proyecto</p>
-    </div>
-  </footer>
+            <div class="options-menu">
+                <ul>
+                    <li><a href="">Clientes</a></li>
+                    <li><a href="">Pagos</a></li>
+                    <li><a href="">Gestion</a></li>
+                    <li><a href="">Reportes</a></li>
+                    <li><a href="">Control</a></li>
+                </ul>
+            </div>
 
+            <div class="user-controls">
+                <ion-icon name="barbell-sharp"></ion-icon>
+                <ion-icon name="barbell-sharp"></ion-icon>
+                <a href="./login.html" id="btn-sign-up">Sign Up</a>
+            </div>
+        </div>
+    </header>
+    <main>
+
+    </main>
+
+
+    <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
+
+    <script src="assets/js/script.js"></script>
 </body>
+
 </html>

@@ -1,0 +1,115 @@
+/*Variables*/
+:root{
+  --background-color:rgb(50, 50, 50);
+  --header-color:rgba(31, 31, 31, 0.836);
+  --main-color:rgb(130, 40, 40);
+  --text-color:rgb(235, 235, 235);
+  --hover-color:rgb(195, 100, 27);
+}
+/* Global */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body{
+  background-color: var(--background-color);
+}
+
+header{
+  /*border: solid red;*/
+  position: fixed;
+  top: 0;
+  z-index: 100;
+  width: 100%;
+  height: 80px;
+  background-color: var(--header-color);
+  border-radius: 0 0 20px 20px;
+  color: var(--text-color);
+}
+
+header .container{
+  /*border: solid white;*/
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  max-width: 1280px;
+  height: 100%;
+  margin: 0 auto;
+  padding: 0 30px;
+}
+
+header .logo{
+  display: flex;
+  align-items: center;
+}
+
+header .logo ion-icon{
+  font-size: 35px;
+  color: var(--main-color);
+  margin-right: 5px
+}
+
+header .logo span{
+  font-size: 25px;
+  font-weight: 600;
+}
+
+header .options-menu{
+  /*border: solid yellow;*/
+  height: auto;
+}
+
+header .options-menu ul{
+  display: flex;
+  flex-direction: row;
+}
+
+header .options-menu li{
+  list-style: none;
+  margin: 15px;
+}
+
+header .options-menu a{
+  color: var(--text-color);
+  text-decoration: none;
+  
+  transition: color 0.2s ease;
+}
+
+header .options-menu a:hover{
+  color: var(--main-color);
+}
+
+header .user-controls{
+  /*border: solid blue;*/
+  display: flex;
+  gap: 20px;
+  align-items: center;
+}
+header .user-controls ion-icon{
+  font-size: 25px;
+  cursor: pointer;
+  color: var(--main-color);
+}
+
+header .user-controls ion-icon:hover{
+  
+  color: var(--hover-color);
+}
+
+header #btn-sign-up{
+  border: none;
+  cursor: pointer;
+  width: 110px;
+  height: 40px;
+  border-radius: 10px;
+  background-color: var(--main-color);
+  color: var(--text-color);
+}
+
+header #btn-sign-up:hover{
+  background-color: var(--hover-color);
+}

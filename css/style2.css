@@ -147,6 +147,20 @@ body {
   color: #fff;
   transform: translateY(-2px);
 }
+.user{
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  flex-direction: column;
+}
+.password{
+   display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  flex-direction: column;
+  
+ 
+}
 
 .my_button{
     border: 1px solid black;

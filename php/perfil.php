@@ -28,10 +28,6 @@ if (mysqli_connect_error()) {
 
 $stmt = $conexion->prepare('SELECT password, email FROM accounts WHERE id = ?');
 
-
-
-
-
 $stmt->bind_param('i', $_SESSION['id']);
 $stmt->execute();
 $stmt->bind_result($password, $email);
@@ -40,10 +36,6 @@ $stmt->close();
 
 
 ?>
-
-
-
-
 
 <!DOCTYPE html>
 <html lang="en">
@@ -65,7 +57,6 @@ $stmt->close();
         <a href="cerrar-sesion.php" style="color:white;"><i class="fas fa-sign-out-alt"></i>Cerrar Sesion</a>
     </nav>
     <div class="content">
-
         <h2>Información del Usuario</h2>
         <div>
             <p>
@@ -81,18 +72,9 @@ $stmt->close();
                     <td><?= $email ?></td>
                 </tr>
             </table>
-
-
-
         </div>
-
-
     </div>
 
-
-
     </nav>
-
 </body>
-
 </html>

@@ -1,7 +1,6 @@
 <?php
 session_start();
 
-
 //credenciales de acceso a la base datos
 
 $DATABASE_HOST = 'localhost';
@@ -21,7 +20,6 @@ if (mysqli_connect_error()) {
 }
 
 // Se valida si se ha enviado información, con la función isset()
-
 if (!isset($_POST['username'], $_POST['password'])) {
 
     // si no hay datos muestra error y re direccionar

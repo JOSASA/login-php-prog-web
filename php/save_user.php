@@ -26,10 +26,11 @@ if (isset($_POST['username'], $_POST['password'], $_POST['email'], $_POST['phone
     }
 
     // Cifrar contraseña
-    //$passwordHash = password_hash($password, PASSWORD_DEFAULT);
+    //$passwordHash = password_hash($password, PASSWORD_DEFAULT); NO EN USO
 
     // Preparar la consulta para evitar inyección SQL
-    $stmt = $conn->prepare("INSERT INTO accounts (username, password, email, phone) VALUES (?, ?, ?, ?)");
+    $stmt = $conn->prepare("INSERT INTO accounts (username, password, email, phone) 
+    VALUES (?, ?, ?, ?)");
     if ($stmt === false) {
         die("Error en la preparación de la consulta: " . $conn->error);
     }
