@@ -4,35 +4,45 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="./css/styleI.css">
+    <link rel="stylesheet" href="./css/index.css">
     <title>Document</title>
 </head>
 
 <body>
     <header>
+        
         <div class="container">
             <div class="logo">
-                <ion-icon name="barbell-sharp"></ion-icon>
+               <ion-icon id="menu-toggle" name="menu-outline"></ion-icon>   
                 <span>E-Commerce</span>
             </div>
 
-            <div class="options-menu">
-                <ul>
-                    <li><a href="">Clientes</a></li>
-                    <li><a href="">Pagos</a></li>
-                    <li><a href="">Gestion</a></li>
-                    <li><a href="">Reportes</a></li>
-                    <li><a href="">Control</a></li>
-                </ul>
-            </div>
+            <!-- menú desplegable -->
+           
+
+           
 
             <div class="user-controls">
-                <ion-icon name="barbell-sharp"></ion-icon>
-                <ion-icon name="barbell-sharp"></ion-icon>
-                <a href="./login.html" id="btn-sign-up">Sign Up</a>
+                <ul>
+                    <li><a href="./login.html" id="btn-sign-up">Iniciar sesión</a></li>
+                    <a href="" hidden>
+                        <li></li>Mi Cuenta</li>
+                    </a>
+                    <li><input placeholder="BUSCAR"></li>
+                </ul>
+
+
             </div>
         </div>
     </header>
+     <nav id="side-menu">
+                <ul>
+                    <li><a href="">Inicio</a></li>
+                    <li><a href="">Ofertas</a></li>
+                    <li><a href="">Productos</a></li>
+                    <li><a href="">Contacto</a></li>
+                </ul>
+            </nav>
     <main>
 
     </main>
@@ -41,7 +51,7 @@
     <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
     <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
 
-    <script src="assets/js/script.js"></script>
+    <script src="./js/menu-desplegable.js"></script>
 </body>
 
 </html>
