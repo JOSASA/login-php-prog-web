@@ -6,7 +6,7 @@ session_start();
 $DATABASE_HOST = 'localhost';
 $DATABASE_USER = 'root';
 $DATABASE_PASS = '';
-$DATABASE_NAME = 'prueba';
+$DATABASE_NAME = 'login-php';
 
 // conexion a la base de datos
 
@@ -24,7 +24,7 @@ if (!isset($_POST['username'], $_POST['password'])) {
 
     // si no hay datos muestra error y re direccionar
 
-    header('Location: index.html');
+    header('Location: ../index.php');
 }
 
 // evitar inyección sql
@@ -58,12 +58,12 @@ if ($stmt->num_rows > 0) {
         $_SESSION['loggedin'] = TRUE;
         $_SESSION['name'] = $_POST['username'];
         $_SESSION['id'] = $id;
-        header('Location: inicio.php');
+        header('Location: ../index.php');
         echo "ya entre";
     } else {
 
     // usuario incorrecto
-    header('Location: ../index.html');
+    header('Location: ../index.php');
     
     }
 } 

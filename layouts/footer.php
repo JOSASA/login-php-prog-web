@@ -2,29 +2,28 @@
         <div class="container">
             <div class="footer-content">
                 <div class="footer-column">
-                    <h2 class="footer-logo">Zay Shop</h2>
+                    <h2 class="footer-logo">eBrainrot</h2>
                     <ul>
-                        <li><i class="fas fa-map-marker-alt fa-fw"></i> 123 Consectetur at ligula 10660</li>
+                        <li><i class="fas fa-map-marker-alt fa-fw"></i> Hermosillo, Son</li>
                         <li><i class="fa fa-phone fa-fw"></i> <a href="tel:010-020-0340">010-020-0340</a></li>
-                        <li><i class="fa fa-envelope fa-fw"></i> <a href="mailto:info@company.com">info@company.com</a></li>
+                        <li><i class="fa fa-envelope fa-fw"></i> <a href="mailto:info@company.com">info@UES.com</a></li>
                     </ul>
                 </div>
                 <div class="footer-column">
-                    <h2>Products</h2>
+                    <h2>Productos</h2>
                     <ul>
-                        <li><a href="#">Luxury</a></li>
-                        <li><a href="#">Sport Wear</a></li>
-                        <li><a href="#">Men's Shoes</a></li>
-                        <li><a href="#">Women's Shoes</a></li>
+                        <li><a href="#">Componentes</a></li>
+                        <li><a href="#">Gaming</a></li>
+                        <li><a href="#">Monitores</a></li>
+                        <li><a href="#">Almacenamiento</a></li>
                     </ul>
                 </div>
                 <div class="footer-column">
-                    <h2>Further Info</h2>
+                    <h2>Informacion</h2>
                     <ul>
-                        <li><a href="#">Home</a></li>
-                        <li><a href="#">About Us</a></li>
-                        <li><a href="#">Shop Locations</a></li>
-                        <li><a href="#">Contact</a></li>
+                        <li><a href="#">Inicio</a></li>
+                        <li><a href="#">Acerca de</a></li>
+                        <li><a href="#">Contacto</a></li>
                     </ul>
                 </div>
             </div>
@@ -37,13 +36,13 @@
                 </div>
                 <div class="subscribe-form">
                     <input type="text" placeholder="Email address">
-                    <button>Subscribe</button>
+                    <button>Suscribirse</button>
                 </div>
             </div>
         </div>
         <div class="copyright-bar">
             <div class="container">
-                <p>Copyright &copy; 2025 Company Name | Designed by <a rel="sponsored" href="https://templatemo.com" target="_blank">TemplateMo</a></p>
+                <p>Copyright &copy; 2025 UES<a rel="sponsored" href="" target="_blank">EQUIPO</a></p>
             </div>
         </div>
     </footer>

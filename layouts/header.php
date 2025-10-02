@@ -1,33 +1,48 @@
+<?php
+// header.php
+// Es crucial iniciar la sesión en cada página que la use
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
+?>
 <nav class="top-nav">
-        <div class="container top-nav-content">
-            <div class="contact-info">
-                <i class="fa fa-envelope mx-2"></i>
-                <a href="mailto:info@company.com">info@company.com</a>
-                <i class="fa fa-phone mx-2"></i>
-                <a href="tel:010-020-0340">010-020-0340</a>
-            </div>
-            <div class="social-links">
-                <a href="https://fb.com/templatemo" target="_blank"><i class="fab fa-facebook-f"></i></a>
-                <a href="https://www.instagram.com/" target="_blank"><i class="fab fa-instagram"></i></a>
-                <a href="https://twitter.com/" target="_blank"><i class="fab fa-twitter"></i></a>
-                <a href="https://www.linkedin.com/" target="_blank"><i class="fab fa-linkedin"></i></a>
-            </div>
-        </div>
     </nav>
 
-    <header class="main-header">
-        <div class="container header-content">
-            <a class="logo" href="index.php">eBrainrot </a>
-            <ul class="main-nav">
-                <li><a class="nav-link" href="index.php">Home</a></li>
-                <li><a class="nav-link" href="about.php">About</a></li>
-                <li><a class="nav-link" href="shop.php">Shop</a></li>
-                <li><a class="nav-link" href="contact.php">Contact</a></li>
-            </ul>
-            <div class="header-icons">
-                <a class="nav-icon" href="#"><i class="fa fa-fw fa-search"></i></a>
-                <a class="nav-icon" href="#"><i class="fa fa-fw fa-cart-arrow-down"></i></a>
-                <a class="nav-icon" href="#"><i class="fa fa-fw fa-user"></i></a>
-            </div>
+<header class="main-header">
+    <div class="container header-content">
+        <a class="logo" href="index.php">eBrainrot</a>
+        <ul class="main-nav">
+            <li><a class="nav-link" href="index.php">Inicio</a></li>
+            <li><a class="nav-link" href="shop.php">Productos</a></li>
+            <li><a class="nav-link" href="contact.php">Contacto</a></li>
+            <li><a class="nav-link" href="about.php">Acerca de</a></li>
+        </ul>
+<?php
+$items_en_carrito = 0;
+if (!empty($_SESSION['carrito'])) {
+    // Esto cuenta la cantidad total de productos, no solo los tipos de producto
+    $items_en_carrito = array_sum(array_column($_SESSION['carrito'], 'cantidad'));
+}
+?>
+        <div class="header-icons">
+            <a class="nav-icon" href="#"><i class="fa fa-fw fa-search"></i></a>
+            <a class="nav-icon cart-icon" href="carrito.php">
+                <i class="fa fa-fw fa-cart-arrow-down"></i>
+                <?php if ($items_en_carrito > 0): ?>
+                    <span class="cart-count"><?= $items_en_carrito ?></span>
+                <?php endif; ?>
+            </a>
+            
+            <?php if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] === true): ?>
+                <a class="nav-icon" href="perfil.php"><i class="fa fa-fw fa-user"></i></a>
+                <div class="user-info">
+                    <span>Bienvenido, <?= htmlspecialchars($_SESSION['name']) ?>!</span>
+                    <a class="my_button" href="./php/logout.php">Cerrar Sesión</a>
+                </div>
+            <?php else: ?>
+                <a class="nav-icon" href="login.php"><i class="fa fa-fw fa-user"></i> Iniciar Sesión</a>
+            <?php endif; ?>
+
         </div>
-    </header>
+    </div>
+</header>

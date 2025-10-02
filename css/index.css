@@ -124,8 +124,9 @@ img {
 
 /* --- Banner Principal (Hero) --- */
 .hero-banner {
+  padding-top: 80px;
+  padding-bottom: 80px;
   background-color: var(--light-color);
-  padding: 60px 0;
 }
 .hero-content {
   display: flex;
@@ -137,6 +138,7 @@ img {
 }
 .hero-image {
   flex: 1;
+  
 }
 .hero-title {
   font-size: 3em;
@@ -160,11 +162,24 @@ img {
   grid-template-columns: repeat(3, 1fr);
   gap: 40px;
   text-align: center;
+ 
+  
+}
+.categories-grid a{
+  display: flex;
+  justify-content: center;
+}
+.categories-grid .btn-primary{
+  margin: 20px;
+  border-radius: 20px;
 }
 .category-img {
   border-radius: 50%;
   border: 3px solid #eee;
   transition: transform 0.3s ease;
+  height: 268px;
+  width: 268px;
+  object-fit: cover;
 }
 .category-img:hover {
   transform: scale(1.05);

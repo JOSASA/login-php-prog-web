@@ -1,19 +1,7 @@
 <!DOCTYPE html>
 <html lang="es">
 
-<head>
-    <title>eBrainrot - eCommerce</title>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-
-    <link rel="apple-touch-icon" href="assets/img/apple-icon.png">
-    <link rel="shortcut icon" type="image/x-icon" href="assets/img/favicon.ico">
-    
-    <link rel="stylesheet" href="./css/index.css">
-
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@100;200;300;400;500;700;900&display=swap">
-    <link rel="stylesheet" href="assets/css/fontawesome.min.css">
-</head>
+<?php include './layouts/head.php'; ?>
 
 <body>
     
@@ -26,14 +14,14 @@
                     <h1 class="hero-title"><b>eBrainrot</b> eCommerce</h1>
                     <h2 class="hero-subtitle">Tu tienda confiable</h2>
                     <p>
-                        eBrainrot es una tienda en linea dirigida hacia la tecnologia Inspirada en<a href="https://ddtech.mx/" target="_blank">DDTECH</a> website. 
+                        eBrainrot es una tienda en linea dirigida hacia la tecnologia Inspirada en <a href="https://ddtech.mx/" target="_blank">DDTECH</a> website. 
                         Credito de las imagenes a <a href="https://stories.freepik.com/" target="_blank">Freepik Stories</a>,
                         <a href="https://unsplash.com/" target="_blank">Unsplash</a> y
                         <a href="https://icons8.com/" target="_blank">Icons 8</a>.
                     </p>
                 </div>
                 <div class="hero-image">
-                    <img src="./assets/img/banner_img_01.jpg" alt="Banner Image">
+                    <img src="./assets/img/setup.jpg" alt="Banner Image">
                 </div>
             </div>
         </div>
@@ -42,24 +30,24 @@
     <section class="categories-section">
         <div class="container">
             <div class="section-header">
-                <h1>Categories of The Month</h1>
+                <h1>Categorias mas relevantes</h1>
                 <p>Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
             </div>
             <div class="categories-grid">
                 <div class="category-item">
-                    <a href="#"><img src="./assets/img/category_img_01.jpg" class="category-img"></a>
-                    <h5 class="category-title">Watches</h5>
-                    <p><a class="btn-primary">Go Shop</a></p>
+                    <a href="#"><img src="./assets/img/componente.jpg" class="category-img"></a>
+                    <h5 class="category-title">Componentes</h5>
+                    <p><a class="btn-primary">Comprar</a></p>
                 </div>
                 <div class="category-item">
-                    <a href="#"><img src="./assets/img/category_img_02.jpg" class="category-img"></a>
-                    <h5 class="category-title">Shoes</h5>
-                    <p><a class="btn-primary">Go Shop</a></p>
+                    <a href="#"><img src="./assets/img/accesorios.jpg" class="category-img"></a>
+                    <h5 class="category-title">Accesorios</h5>
+                    <p><a class="btn-primary">Comprar</a></p>
                 </div>
                 <div class="category-item">
-                    <a href="#"><img src="./assets/img/category_img_03.jpg" class="category-img"></a>
-                    <h5 class="category-title">Accessories</h5>
-                    <p><a class="btn-primary">Go Shop</a></p>
+                    <a href="#"><img src="./assets/img/monitor.jpg" class="category-img"></a>
+                    <h5 class="category-title">Monitores</h5>
+                    <p><a class="btn-primary">Comprar</a></p>
                 </div>
             </div>
         </div>
