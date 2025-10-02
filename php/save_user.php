@@ -38,7 +38,7 @@ if (isset($_POST['username'], $_POST['password'], $_POST['email'], $_POST['phone
     $stmt->bind_param("ssss", $username, $password, $email, $phone);
 
     if ($stmt->execute()) {
-        echo "✅ Registro exitoso. <a href='../index.html'>Inicia sesión aquí</a>";
+        header('Location: ../index.php');
     } else {
         echo "❌ Error al registrar: " . $stmt->error;
     }

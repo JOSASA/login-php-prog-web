@@ -1,178 +1,277 @@
-/*Variables*/
-:root {
-    --background-color: rgb(50, 50, 50);
-    --header-color: rgba(31, 31, 31, 0.836);
-    --main-color: rgb(130, 40, 40);
-    --text-color: rgb(235, 235, 235);
-    --hover-color: rgb(195, 100, 27);
-}
-
-/* Global */
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
+@import url('reciclables.css');
 
 body {
-    background-color: var(--background-color);
-}
-
-header {
-    /*border: solid red;*/
-    position: fixed;
-    top: 0;
-    z-index: 100;
-    width: 100%;
-    height: 80px;
-    background-color: var(--header-color);
-
-    color: var(--text-color);
-}
-
-header .container {
-    /*border: solid white;*/
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    width: 100%;
-    max-width: 1280px;
-    height: 100%;
-    margin: 0 auto;
-    padding: 0 30px;
-    list-style: none;
-}
-
-header .logo {
-    display: flex;
-    align-items: center;
-}
-
-header .logo ion-icon {
-    font-size: 35px;
-    color: var(--main-color);
-    margin-right: 5px
-}
-
-header .logo span {
-    font-size: 25px;
-    font-weight: 600;
-}
-
-header .options-menu {
-    /*border: solid yellow;*/
-    height: auto;
-}
-
-header .options-menu ul{
-    display: flex;
-    flex-direction: row;
-}
-
-header .options-menu li {
-    list-style: none;
-    margin: 15px;
-}
-
-header .options-menu a {
-    color: var(--text-color);
-    text-decoration: none;
-    transition: color 0.2s ease;
-}
-
-header .container .user-controls ul {
-    list-style: none;
-    list-style-type: none;
-}
-
-header .options-menu a:hover {
-    color: var(--main-color);
-}
-
-.user-controls ul {
-    /*border: solid blue;*/
-    display: flex;
-    gap: 20px;
-    align-items: center;
-    list-style: none;
-    flex-direction: row;
-}
-
-header .user-controls ion-icon {
-    font-size: 25px;
-    cursor: pointer;
-    color: var(--main-color);
-}
-
-.list-der {
-    list-style: none;
-    display: flex;
-    list-style-type: none;
-}
-
-header .user-controls ul {
-    list-style: none;
-    margin-left: 0;
-    margin: 15px;
-    list-style-type: none;
-}
-
-header .user-controls ion-icon:hover {
-    color: var(--hover-color);
-}
-
-header #btn-sign-up {
-    border: none;
-    cursor: pointer;
-    width: 110px;
-    height: 40px;
-    border-radius: 10px;
-    background-color: var(--main-color);
-    color: var(--text-color);
-}
-
-header #btn-sign-up:hover {
-    background-color: var(--hover-color);
-}
-
-/* menú lateral oculto */
-#side-menu {
-  position: fixed;
-  top: 80px;                /* inicia debajo del header */
-  left: -250px;             /* oculto por defecto */
-  width: 250px;
-  height: calc(100% - 80px); /* nunca invade el header */
-  background-color: var(--header-color);
-  transition: left 0.3s ease;
-  z-index: 200;
-}
-
-#side-menu.active {
-  left: 0;
-}   
-#side-menu ul li {
-  padding: 15px 20px;
-}
-
-#side-menu ul li a {
+  font-family: "Roboto", sans-serif;
+  margin: 0;
   color: var(--text-color);
+  line-height: 1.6;
+}
+
+h1,
+h2,
+h5 {
+  font-weight: 500;
+}
+
+a {
   text-decoration: none;
+  color: var(--primary-color);
+  transition: color 0.3s ease;
+}
+
+a:hover {
+  color: #4a8e5a;
+}
+
+ul {
+  list-style: none;
+  padding: 0;
+}
+
+img {
+  max-width: 100%;
+  height: auto;
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+/* --- Componentes Reutilizables --- */
+.section-header {
+  text-align: center;
+  margin-bottom: 50px;
+}
+.section-header h1 {
+  font-size: 2.5em;
+  margin-bottom: 10px;
+}
+.section-header p {
+  font-size: 1.1em;
+  color: #666;
+  max-width: 600px;
+  margin: 0 auto;
+}
+.btn-primary {
+  display: inline-block;
+  background-color: var(--primary-color);
+  color: #fff;
+  padding: 10px 25px;
+  border-radius: 5px;
+  font-weight: 500;
+  transition: background-color 0.3s ease;
+}
+.btn-primary:hover {
+  background-color: #4a8e5a;
+  color: #fff;
+}
+
+/* --- Navegación y Encabezado (Compartido) --- */
+.top-nav {
+  background-color: var(--dark-color);
+  padding: 8px 0;
+  font-size: 0.9em;
+}
+.top-nav-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.top-nav a {
+  color: var(--text-light);
+  margin-right: 15px;
+}
+.top-nav i {
+  margin: 0 5px;
+}
+.social-links a {
+  margin: 0 8px;
+}
+.main-header {
+  background-color: #fff;
+  padding: 15px 0;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+.header-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.logo {
+  font-size: 2.5em;
+  font-weight: bold;
+  color: var(--primary-color);
+}
+.main-nav {
+  display: flex;
+  gap: 25px;
+}
+.nav-link {
+  color: var(--text-color);
+  font-size: 1.1em;
+  font-weight: 500;
+}
+.header-icons {
+  display: flex;
+  gap: 20px;
+}
+.header-icons .nav-icon {
+  font-size: 1.2em;
+  color: var(--text-color);
+}
+
+/* --- Banner Principal (Hero) --- */
+.hero-banner {
+  padding-top: 80px;
+  padding-bottom: 80px;
+  background-color: var(--light-color);
+}
+.hero-content {
+  display: flex;
+  align-items: center;
+  gap: 40px;
+}
+.hero-text {
+  flex: 1;
+}
+.hero-image {
+  flex: 1;
+  
+}
+.hero-title {
+  font-size: 3em;
+  color: var(--primary-color);
+}
+.hero-title b {
+  color: var(--text-color);
+}
+.hero-subtitle {
+  font-size: 1.8em;
+  margin-bottom: 20px;
+  color: var(--text-color);
+}
+
+/* --- Sección de Categorías --- */
+.categories-section {
+  padding: 80px 0;
+}
+.categories-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 40px;
+  text-align: center;
+ 
+  
+}
+.categories-grid a{
+  display: flex;
+  justify-content: center;
+}
+.categories-grid .btn-primary{
+  margin: 20px;
+  border-radius: 20px;
+}
+.category-img {
+  border-radius: 50%;
+  border: 3px solid #eee;
+  transition: transform 0.3s ease;
+  height: 268px;
+  width: 268px;
+  object-fit: cover;
+}
+.category-img:hover {
+  transform: scale(1.05);
+}
+.category-title {
+  font-size: 1.5em;
+  margin: 20px 0 15px;
+}
+
+/* --- Sección de Productos Destacados --- */
+.featured-products {
+  background-color: var(--light-color);
+  padding: 80px 0;
+}
+.products-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 30px;
+}
+.product-card {
+  background-color: #fff;
+  border: 1px solid #eee;
+  border-radius: 5px;
+  overflow: hidden;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+  transition: box-shadow 0.3s ease;
+}
+.product-card:hover {
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+}
+.card-body {
+  padding: 20px;
+}
+.card-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 15px;
+}
+.product-rating {
+  display: flex;
+  gap: 3px;
+}
+.star-active {
+  color: var(--warning-color);
+}
+.star-inactive {
+  color: #ccc;
+}
+.product-price {
+  font-size: 1.1em;
+  color: var(--muted-color);
+  font-weight: bold;
+}
+.product-title {
   display: block;
-  transition: background 0.2s ease;
+  font-size: 1.4em;
+  color: var(--text-color);
+  margin-bottom: 10px;
+  font-weight: bold;
+}
+.product-description {
+  color: #666;
+  font-size: 0.9em;
+}
+.product-reviews {
+  color: var(--muted-color);
 }
 
-#side-menu ul li a:hover {
-  background-color: var(--hover-color);
-}
 
-/* cuando se active */
-#side-menu.active {
-  left: 0;
-}
 
-/* icono del menú */
-#menu-toggle {
-  font-size: 30px;
-  color: var(--main-color);
-  cursor: pointer;
+/* --- Diseño Responsivo (para móviles) --- */
+@media (max-width: 768px) {
+  .header-content {
+    flex-direction: column;
+    gap: 15px;
+  }
+
+  .top-nav-content,
+  .footer-bottom {
+    flex-direction: column;
+    text-align: center;
+    gap: 15px;
+  }
+
+  .hero-content {
+    flex-direction: column-reverse; /* Pone la imagen arriba en móviles */
+  }
+
+  .categories-grid,
+  .products-grid,
+  .footer-content {
+    grid-template-columns: 1fr;
+  }
 }
