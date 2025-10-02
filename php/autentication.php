@@ -6,7 +6,7 @@ session_start();
 $DATABASE_HOST = 'localhost';
 $DATABASE_USER = 'root';
 $DATABASE_PASS = '';
-$DATABASE_NAME = 'login-php';
+$DATABASE_NAME = 'prueba';
 
 // conexion a la base de datos
 
@@ -29,7 +29,7 @@ if (!isset($_POST['username'], $_POST['password'])) {
 
 // evitar inyección sql
 
-if ($stmt = $conexion->prepare('SELECT id,password FROM accounts WHERE username = ?')) {
+if ($stmt = $conexion->prepare('SELECT userID,password FROM accounts WHERE username = ?')) {
 
     // parámetros de enlace de la cadena s
 
