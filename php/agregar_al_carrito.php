@@ -1,45 +1,77 @@
 <?php
-// agregar_al_carrito.php
 
+// ===============================================
+// FIN DE LA CONEXIÓN
+// ===============================================
+// Inicia la sesión para obtener el identificador único del visitante (id_sesion)
+require_once 'dbconnect.php'
 session_start();
 
-// 1. Validar que se recibieron los datos esperados
-if (
-    !isset($_POST['id'], $_POST['nombre'], $_POST['precio'], $_POST['cantidad']) ||
-    !is_numeric($_POST['id']) ||
-    !is_numeric($_POST['precio']) ||
-    !is_numeric($_POST['cantidad'])
-) {
-    // Si no se reciben los datos o no son válidos, no hacemos nada o mostramos un error.
-    die('Datos del producto no válidos.');
+// Incluye el archivo de conexión a la base de datos (con mysqli)
+
+
+// 1. Identificación del Carrito
+// Usamos el ID de la sesión como identificador del carrito para usuarios no logueados.
+$id_sesion = session_id(); 
+// Si tuvieras un sistema de login, usarías $id_usuario = $_SESSION['user_id'] ?? null;
+// Por ahora, solo usamos id_sesion.
+
+// 2. Obtener datos del formulario
+// Asumimos que el formulario de la tienda solo envía el ID del producto y la cantidad (por defecto 1).
+$id_producto = $_POST['id'] ?? null;
+$cantidad    = (int)($_POST['cantidad'] ?? 1); 
+
+// 3. Validación inicial
+if (!$id_producto || $cantidad <= 0) {
+    header('Location: ../shop.php?error=datos_invalidos');
+    exit;
 }
 
-// 2. Recuperar los datos del producto
-$id_producto = (int)$_POST['id'];
-$nombre_producto = $_POST['nombre'];
-$precio_producto = (float)$_POST['precio'];
-$cantidad = (int)$_POST['cantidad'];
+// Habilitar la gestión de transacciones
+// Aunque esta es una operación simple, es buena práctica mantenerla.
+$conn->begin_transaction(); 
 
-// 3. Inicializar el carrito en la sesión si no existe
-if (!isset($_SESSION['carrito'])) {
-    $_SESSION['carrito'] = [];
+try {
+    // A. CONSULTA: Verificar si el producto ya existe en el carrito
+    $stmt = $conn->prepare("SELECT cantidad FROM carritos WHERE id_sesion = ? AND id_producto = ?");
+    $stmt->bind_param("si", $id_sesion, $id_producto);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    $item = $result->fetch_assoc();
+    $stmt->close();
+
+    if ($item) {
+        // B. ACTUALIZAR: Si ya existe, suma la nueva cantidad
+        $nueva_cantidad = $item['cantidad'] + $cantidad;
+        
+        $stmt = $conn->prepare("UPDATE carritos SET cantidad = ? WHERE id_sesion = ? AND id_producto = ?");
+        $stmt->bind_param("isi", $nueva_cantidad, $id_sesion, $id_producto);
+        $stmt->execute();
+        $stmt->close();
+        
+    } else {
+        // C. INSERTAR: Si no existe, agrégalo como un nuevo ítem
+        $stmt = $conn->prepare("INSERT INTO carritos (id_sesion, id_producto, cantidad) VALUES (?, ?, ?)");
+        $stmt->bind_param("sii", $id_sesion, $id_producto, $cantidad);
+        $stmt->execute();
+        $stmt->close();
+    }
+    
+    // Si todo salió bien, confirma la transacción
+    $conn->commit();
+    
+    // Redirige de vuelta a la tienda o al carrito con mensaje de éxito
+    header('Location: ../shop.php?msg=producto_agregado');
+    exit;
+
+} catch (\mysqli_sql_exception $e) {
+    // Si algo falla, revierte las operaciones
+    $conn->rollback();
+    
+    // Redirige con un error
+    // En producción, es mejor registrar el error completo y mostrar solo un mensaje genérico.
+    error_log("Error al agregar al carrito: " . $e->getMessage()); 
+    header('Location: ../shop.php?error=db_fail');
+    exit;
 }
-
-// 4. Lógica para agregar el producto
-// Si el producto ya está en el carrito, actualizamos la cantidad
-if (isset($_SESSION['carrito'][$id_producto])) {
-    $_SESSION['carrito'][$id_producto]['cantidad'] += $cantidad;
-} else {
-    // Si es un producto nuevo, lo agregamos al carrito
-    $_SESSION['carrito'][$id_producto] = [
-        'nombre' => $nombre_producto,
-        'precio' => $precio_producto,
-        'cantidad' => $cantidad,
-        'imagen' => $_POST['imagen'] // Opcional: guardar la imagen
-    ];
-}
-
-// 5. Redirigir al usuario de vuelta a la página de productos
-header('Location: ../shop.php');
-exit;
 ?>

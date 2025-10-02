@@ -36,7 +36,7 @@
           <i class="fas fa-sign-in-alt"></i> Log In
         </button>
         <!-- Botón de registro -->
-        <a href="register.html" class="register-btn">
+        <a href="./register.php" class="register-btn">
           <i class="fas fa-user-plus"></i> Registrarse
         </a>
       </form>

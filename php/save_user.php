@@ -3,7 +3,7 @@
 $DATABASE_HOST = 'localhost';
 $DATABASE_USER = 'root';
 $DATABASE_PASS = '';
-$DATABASE_NAME = 'login-php';
+$DATABASE_NAME = 'practicaecommerce';
 
 // Conectar a la base de datos
 $conn = new mysqli($DATABASE_HOST, $DATABASE_USER, $DATABASE_PASS, $DATABASE_NAME);
@@ -25,20 +25,19 @@ if (isset($_POST['username'], $_POST['password'], $_POST['email'], $_POST['phone
         die("Por favor, completa todos los campos.");
     }
 
-    // Cifrar contraseña
-    //$passwordHash = password_hash($password, PASSWORD_DEFAULT); NO EN USO
+    $passwordHash = password_hash($password, PASSWORD_DEFAULT); 
 
     // Preparar la consulta para evitar inyección SQL
-    $stmt = $conn->prepare("INSERT INTO accounts (username, password, email, phone) 
+    $stmt = $conn->prepare("INSERT INTO accounts (username, password_hash, email, phone) 
     VALUES (?, ?, ?, ?)");
     if ($stmt === false) {
         die("Error en la preparación de la consulta: " . $conn->error);
     }
 
-    $stmt->bind_param("ssss", $username, $password, $email, $phone);
+    $stmt->bind_param("ssss", $username, $passwordHash, $email, $phone);
 
     if ($stmt->execute()) {
-        header('Location: ../index.php');
+        header('Location: ../login.php');
     } else {
         echo "❌ Error al registrar: " . $stmt->error;
     }
