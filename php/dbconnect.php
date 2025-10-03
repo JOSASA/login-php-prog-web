@@ -7,7 +7,7 @@
 $DATABASE_HOST = 'localhost';
 $DATABASE_USER = 'root';
 $DATABASE_PASS = '';
-$DATABASE_NAME = 'practicaecommerce'; // <<-- ¡Asegúrate de que este sea el nombre correcto de tu DB!
+$DATABASE_NAME = 'ecommerce_php'; // <<-- ¡Asegúrate de que este sea el nombre correcto de tu DB!
 
 // Habilitar el reporte de errores para manejar excepciones de MySQLi
 mysqli_report(MYSQLI_REPORT_ERROR | MYSQLI_REPORT_STRICT);

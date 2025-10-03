@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -17,6 +17,7 @@
         <h2>Registro</h2>
       </div>
 
+      <!-- Adaptado para que funcione con php/register.php -->
       <form action="php/save_user.php" method="post" class="check-in-form">
         
         <label for="username">

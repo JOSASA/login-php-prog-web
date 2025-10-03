@@ -1,18 +1,19 @@
 <?php
-
+session_start();
 // ===============================================
 // FIN DE LA CONEXIÓN
 // ===============================================
 // Inicia la sesión para obtener el identificador único del visitante (id_sesion)
-require_once 'dbconnect.php'
-session_start();
+require_once 'dbconnect.php';
+
 
 // Incluye el archivo de conexión a la base de datos (con mysqli)
 
 
 // 1. Identificación del Carrito
 // Usamos el ID de la sesión como identificador del carrito para usuarios no logueados.
-$id_sesion = session_id(); 
+$id= session_id();
+// Si el usuario está logueado, podrías usar su ID de usuario en lugar del ID de sesión.
 // Si tuvieras un sistema de login, usarías $id_usuario = $_SESSION['user_id'] ?? null;
 // Por ahora, solo usamos id_sesion.
 

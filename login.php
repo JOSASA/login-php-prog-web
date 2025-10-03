@@ -35,6 +35,9 @@
         <button type="submit">
           <i class="fas fa-sign-in-alt"></i> Log In
         </button>
+        <label>
+          <input type="checkbox" name="rememberme" value="1"> Recordarme
+        </label>
         <!-- Botón de registro -->
         <a href="./register.php" class="register-btn">
           <i class="fas fa-user-plus"></i> Registrarse
