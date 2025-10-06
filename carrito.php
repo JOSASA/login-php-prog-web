@@ -6,7 +6,7 @@
     <title>Tu Carrito de Compras</title>
 </head>
 <body>
-    <?php include './layouts/header.php'; ?>
+<?php include './layouts/header.php';?>
 
     <main class="page-content">
         <div class="container">
@@ -68,7 +68,7 @@
                             <span>Total</span>
                             <span>$<?= number_format($total, 2) ?></span>
                         </div>
-                        <button class="btn-primary btn-checkout">Proceder al Pago</button>
+                        <button class="btn-primary btn-checkout" onclick="location.href='checkout.php'" >Proceder al Pago</button>
                     </div>
                 </div>
             <?php endif; ?>

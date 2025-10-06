@@ -2,7 +2,6 @@
 // header.php
 // Es crucial iniciar la sesión en cada página que la use
 
-session_start();
 require_once 'php/cookies.php'; // Asegúrate de tener la conexión a la base de datos
 ?>
 

@@ -10,6 +10,7 @@
     <link rel="stylesheet" href="./css/shop.css">
     <link rel="stylesheet" href="./css/shop-single.css">
     <link rel="stylesheet" href="./css/carrito.css">
+    <link rel="stylesheet" href="./css/checkout.css">
     
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@100;200;300;400;500;700;900&display=swap">
     <link rel="stylesheet" href="assets/css/fontawesome.min.css">
