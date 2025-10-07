@@ -34,7 +34,7 @@ if (!empty($_SESSION['carrito'])) {
             </a>
             
             <?php if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] === true): ?>
-                <a class="nav-icon" href="perfil.php"><i class="fa fa-fw fa-user"></i></a>
+                <a class="nav-icon" href="./perfil.php"><i class="fa fa-fw fa-user"></i></a>
                 <div class="user-info">
                     <span>Bienvenido, <?= htmlspecialchars($_SESSION['name']) ?>!</span>
                     <a class="my_button" href="./php/logout.php">Cerrar Sesión</a>

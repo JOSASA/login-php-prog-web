@@ -3,7 +3,7 @@ session_start();
 // 1. Incluimos TU archivo de conexión
 require './php/dbconnect.php';
 
-// ... (Aquí iría tu lógica real para verificar usuario y contraseña) ...
+
 // Supongamos que el login es exitoso y obtienes el ID del usuario
 $usuario_id_logueado = 1; // Ejemplo
 
