@@ -1,6 +1,6 @@
 <?php
 // Iniciar la sesión es importante para que el carrito funcione.
-¿
+
 
 // 1. CONEXIÓN Y CONSULTA A LA BASE DE DATOS
 // ===============================================

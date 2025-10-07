@@ -1,8 +1,10 @@
+<?php session_start(); ?>
 <!DOCTYPE html>
 <html lang="es">
 
 <head>
     <?php include './layouts/head.php'; ?>
+    
 </head>
 
 <body>

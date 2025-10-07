@@ -1,29 +1,32 @@
 <?php
+session_start();
+require 'dbconnect.php'; // Conexión a la BD
 
-// 1. Incluimos TU archivo de conexión
-require './php/dbconnect.php'; 
-
-if (isset($_GET['id'])) {
-    $id = $_GET['id'];
-
-    // Lógica de sesión (se mantiene igual)
-    if (isset($_SESSION['carrito'][$id])) {
-        unset($_SESSION['carrito'][$id]);
-    }
-    
-    // Lógica de persistencia en BD
-    if (isset($_SESSION['usuario_id'])) {
-        $usuario_id = $_SESSION['usuario_id'];
-        $producto_id = $id;
-        
-        // Eliminamos el producto de la tabla 'carrito' para ese usuario
-        // 2. Usamos $conn en lugar de $mysqli
-        $stmt = $conn->prepare("DELETE FROM carrito WHERE usuario_id = ? AND producto_id = ?");
-        $stmt->bind_param("ii", $usuario_id, $producto_id);
-        $stmt->execute();
-        $stmt->close(); // Cerramos el statement
-    }
+// 1. Validar que se recibió un ID por GET
+if (!isset($_GET['id'])) {
+    header('Location: ../carrito.php?status=no_id');
+    exit();
 }
 
-header('Location: ../carrito.php');
+$id = filter_input(INPUT_GET, 'id', FILTER_VALIDATE_INT);
+
+if (!$id) {
+    header('Location: ../carrito.php');
+    exit();
+}
+
+// 2. Eliminar de la SESIÓN
+unset($_SESSION['carrito'][$id]);
+
+// 3. Eliminar de la BASE DE DATOS si el usuario está logueado
+if (isset($_SESSION['id'])) {
+    $usuario_id = $_SESSION['id'];
+    $stmt = $conn->prepare("DELETE FROM carrito WHERE usuario_id = ? AND producto_id = ?");
+    $stmt->bind_param("ii", $usuario_id, $id);
+    $stmt->execute();
+    $stmt->close();
+}
+
+// 4. Redirigir de vuelta al carrito
+header('Location: ../carrito.php?status=eliminado');
 exit();

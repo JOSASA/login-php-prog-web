@@ -3,7 +3,6 @@
 session_start();
 
 // --- NUEVO: Incluimos la conexión a la base de datos ---
-// Asegúrate de que la ruta a tu archivo de conexión sea la correcta.
 require 'dbconnect.php';
 
 // 1. Verificar que se está enviando el formulario por el método POST.
@@ -36,11 +35,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         ];
     }
 
-    // --- NUEVO: LÓGICA DE PERSISTENCIA EN LA BASE DE DATOS ---
+    // --- LÓGICA DE PERSISTENCIA EN LA BASE DE DATOS (CORREGIDA) ---
+    
     // 4. Verificamos si el usuario ha iniciado sesión.
-    //    (Asumimos que guardas su ID en $_SESSION['usuario_id'] al hacer login).
-    if (isset($_SESSION['usuario_id'])) {
-        $usuario_id = $_SESSION['usuario_id'];
+    //    (Ahora buscamos la variable correcta: $_SESSION['id'])
+    if (isset($_SESSION['id'])) { // <--- ✨ CAMBIO AQUÍ
+        $usuario_id = $_SESSION['id']; // <--- ✨ CAMBIO AQUÍ
         $producto_id = $id;
 
         // Buscamos si el producto ya está en el carrito de la BD para este usuario.

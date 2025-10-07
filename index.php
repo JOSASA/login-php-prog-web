@@ -1,7 +1,8 @@
 <!DOCTYPE html>
 <html lang="es">
 
-<?php include './layouts/head.php'; ?>
+<?php include './layouts/head.php'; 
+session_start()?>
 
 <body>
     

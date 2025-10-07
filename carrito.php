@@ -48,7 +48,7 @@
                                     $<?= number_format($subtotal, 2) ?>
                                 </div>
                                 <div class="cart-item-remove">
-                                     <a href="eliminar_del_carrito.php?id=<?= $id ?>" class="btn-remove" title="Eliminar Producto">×</a>
+                                    <a href="./php/eliminar_del_carrito.php?id=<?= $id ?>" class="btn-remove" title="Eliminar Producto">×</a>
                                 </div>
                             </div>
                         <?php endforeach; ?>

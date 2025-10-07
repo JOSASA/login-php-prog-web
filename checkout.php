@@ -19,7 +19,7 @@ if (empty($_SESSION['carrito'])) {
 // --- OBTENCIÓN DE DATOS ---
 
 // Cargar datos del usuario para pre-rellenar el formulario
-$usuario_id = $_SESSION['usuario_id'];
+$usuario_id = $_SESSION['id'];
 $stmt = $conn->prepare("SELECT nombre, email, direccion, telefono FROM usuarios WHERE id = ?");
 $stmt->bind_param("i", $usuario_id);
 $stmt->execute();
