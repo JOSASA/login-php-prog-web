@@ -45,76 +45,38 @@ if ($action) {
 // =========================================================================
 
 
+require_once '../src/controllers/PageController.php';
+
 $route = $_GET['route'] ?? 'home';
 
-// Incluimos el header y el head ANTES de decidir qué página mostrar.
-// Esto asegura que estén presentes en todas las páginas.
-include_once '../src/views/layouts/head.php';
-include_once '../src/views/layouts/header.php';
-
-// El switch ahora solo se enfoca en incluir el contenido principal de cada página.
+// El switch ahora es súper simple: solo llama a la función correcta.
 switch ($route) {
     case 'shop':
-        // La lógica para obtener los productos se queda aquí, justo antes de incluir la vista.
-        $categoria_filtro = $_GET['categoria'] ?? null;
-        $orden_filtro = $_GET['orden'] ?? 'newest';
-        $productos = get_all_products($conn, $categoria_filtro, $orden_filtro);
-        $categorias = get_all_categories($conn);
-        
-        include_once '../src/views/pages/shop.php';
+        show_shop_page($conn);
         break;
-
     case 'shop-single':
-        $producto = get_product_by_id($conn, $_GET['id'] ?? 0);
-        if ($producto) {
-            include_once '../src/views/pages/shop-single.php';
-        } else {
-            echo "<p class='container'>Producto no encontrado.</p>";
-        }
+        show_shop_single_page($conn);
         break;
-
     case 'profile':
-        if (!isset($_SESSION['loggedin'])) {
-            header('Location: ' . BASE_URL . 'index.php?route=login');
-            exit;
-        }
-        $user = get_user_details($conn, $_SESSION['id']);
-        include_once '../src/views/pages/profile.php';
+        show_profile_page($conn);
         break;
-
-    // Las páginas que no necesitan cargar datos se incluyen directamente.
+    
+    // Para las páginas simples, llamamos a la función genérica
     case 'cart':
-        include_once '../src/views/pages/carrito.php';
+        show_simple_page('carrito');
         break;
-    case 'cart_remove':
-        // Esta ruta no muestra una página, solo ejecuta una acción y redirige.
-        handle_remove_from_cart($conn);
-        exit();
     case 'login':
-        include_once '../src/views/pages/login.php';
-        break;
     case 'register':
-        include_once '../src/views/pages/register.php';
-        break;
     case 'contact':
-        include_once '../src/views/pages/contact.php';
-        break;
     case 'about':
-        include_once '../src/views/pages/about.php';
-        break;
     case 'checkout':
-        include_once '../src/views/pages/checkout.php';
+        show_simple_page($route);
         break;
     
     case 'home':
     default:
-        // Lógica para la página de inicio.
-        
-        include_once '../src/views/pages/home.php';
+        show_home_page($conn);
         break;
 }
-
-// Incluimos el footer al final.
-include_once '../src/views/layouts/footer.php';
 
 ?>

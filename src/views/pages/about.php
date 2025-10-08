@@ -1,14 +1,11 @@
-<?php session_start(); ?>
+
 <!DOCTYPE html>
 <html lang="es">
 
-<head>
-    <?php include './layouts/head.php'; ?>
-    
-</head>
+
 
 <body>
-    <?php include './layouts/header.php'; ?>
+   
 
     <section class="banner">
         <div class="container banner-content">
@@ -68,7 +65,7 @@
         </div>
     </section>
 
-     <?php include './layouts/footer.php'; // Asumiendo que has movido el footer a un archivo separado ?>
+  
 
 </body>
 </html>

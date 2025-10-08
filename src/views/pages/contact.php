@@ -1,14 +1,11 @@
-<?php session_start(); ?>
+
 <!DOCTYPE html>
 <html lang="es">
 
-<head>
-    <?php include './layouts/head.php'; ?>
-   
-</head>
+
 
 <body>
-    <?php include './layouts/header.php'; ?>
+    
 
     <section class="page-header">
         <div class="container">
@@ -47,7 +44,7 @@
         </div>
     </section>
 
-    <?php include './layouts/footer.php'; ?>
+    
 
     <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
 <script>
