@@ -55,7 +55,7 @@ function handle_login($conn)
                 setcookie('remember_me_token', $token, $expiry_time, '/', '', false, true);
                 }
 
-                header('Location: '.BASE_URL.'index.php?route=profile');
+                header('Location: '.BASE_URL.'index.php?route=home');
                 exit();
             }
         }

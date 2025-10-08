@@ -1,125 +1,144 @@
-/* Reset básico */
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-}
+/* ========================================================================
+   ESTILOS UNIFICADOS PARA LOGIN Y REGISTRO
+   ======================================================================== */
+
+/* ==== Variables de colores (Tema Verde de tu tienda) ==== */
 :root {
-  --bg-color: #f0f2f5;
-  --card-color: #ffffff;
-  --primary-color: #4a90e2;
-  --primary-hover: #357ab8;
-  --text-color: #333333;
-  --placeholder-color: #888888;
+    --bg-color: #f0f2f5;
+    --card-color: #ffffff;
+    --primary-color: #59ab6e; /* Verde principal */
+    --primary-hover: #4a8e5a; /* Verde más oscuro */
+    --text-color: #333333;
+    --placeholder-color: #888888;
 }
 
+/* ==== Reset básico ==== */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+}
 
-/* Fondo general */
+/* ==== Estructura y Fondo ==== */
 body {
-  background: var(--bg-color);
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
+    background: var(--bg-color);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    padding: 20px;
 }
 
-/* MAIN centrado */
-main {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  flex: 1;
-  padding: 20px;
-}
-
-/* Caja de registro */
+/* ==== Contenedor principal (la tarjeta) ==== */
 .check-in-area {
-  background: #fff;
-  padding: 40px 35px;
-  border-radius: 15px;
-  box-shadow: 0 8px 25px rgba(0,0,0,0.15);
-  max-width: 400px;
-  width: 100%;
-  text-align: center;
+    background: var(--card-color);
+    padding: 2.5rem;
+    border-radius: 1rem;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-width: 400px;
+    text-align: center;
+    animation: fadeIn 0.5s ease-out;
 }
 
-/* Título */
+/* ==== Título ==== */
 .titulo-logo h2 {
-  font-size: 28px;
-  margin-bottom: 25px;
- color: var(--primary-color);
+    margin-bottom: 2rem;
+    font-size: 2rem;
+    color: var(--primary-color);
+    font-weight: bold;
 }
 
-/* Formulario */
+/* ==== Formulario ==== */
 .check-in-form {
-  display: flex;
-  flex-direction: column;
-  gap: 18px;
+    display: flex;
+    flex-direction: column;
+    gap: 1.2rem; /* Espacio entre los campos */
 }
 
-/* Input con icono */
-.check-in-form label {
-  position: absolute;
-  margin: 12px 0 0 12px;
-  color: #888;
+/* Grupo de Input con Icono */
+.input-group {
+    position: relative;
 }
 
-.check-in-form input {
-  width: 100%;
-  padding: 12px 12px 12px 38px;
-  border: 1px solid #ddd;
-  border-radius: 10px;
-  font-size: 15px;
-  transition: 0.3s ease;
+.input-group i {
+    position: absolute;
+    left: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--placeholder-color);
+    transition: color 0.3s ease;
 }
 
-.check-in-form input:focus {
-  border-color: #667eea;
-  outline: none;
-  box-shadow: 0 0 6px rgba(102, 126, 234, 0.4);
+.input-group input {
+    width: 100%;
+    padding: 0.9rem 1rem 0.9rem 2.8rem; /* Espacio a la izquierda para el ícono */
+    border: 1px solid #ddd;
+    border-radius: 0.8rem;
+    font-size: 1rem;
+    color: var(--text-color);
+    outline: none;
+    transition: all 0.3s ease;
 }
 
-/* Botón */
-.check-in-form button {
-  background: var(--primary-color);
-  color: #fff;
-  padding: 0.9rem;
-  border: none;
-  border-radius: 0.8rem;
-  font-size: 1.1rem;
-  cursor: pointer;
-  margin-top: 1rem;
-  transition: background 0.3s ease, transform 0.2s ease;
+/* Efecto al hacer focus en el input */
+.input-group input:focus {
+    border-color: var(--primary-color);
+    box-shadow: 0 0 8px rgba(89, 171, 110, 0.3);
 }
 
-.check-in-form button:hover {
-  background: var(--primary-hover);
+.input-group input:focus + i,
+.input-group input:focus ~ i {
+    color: var(--primary-color);
 }
 
-/* Link volver */
-.register-btn {
-  display: inline-block;
-  margin-top: 12px;
-  font-size: 14px;
-  color: #667eea;
-  text-decoration: none;
-  transition: 0.3s;
+/* ==== Botones ==== */
+/* Botón principal (verde, relleno) */
+.check-in-form button[type="submit"] {
+    background: var(--primary-color);
+    color: #fff;
+    padding: 0.9rem;
+    border: none;
+    border-radius: 0.8rem;
+    font-size: 1.1rem;
+    font-weight: 500;
+    cursor: pointer;
+    margin-top: 1rem;
+    transition: background 0.3s ease, transform 0.2s ease;
 }
 
-.register-btn:hover {
-  color: #764ba2;
+.check-in-form button[type="submit"]:hover {
+    background: var(--primary-hover);
+    transform: translateY(-2px);
 }
 
-/* Footer */
-.footer {
-  background: #fff;
-  padding: 15px;
-  text-align: center;
-  border-top: 1px solid #ddd;
+.check-in-form button i {
+    margin-right: 8px;
 }
 
-.footer p {
-  font-size: 14px;
-  color: #666;
+/* Botón secundario (enlace de texto) */
+.secondary-btn {
+    display: block;
+    color: var(--primary-color);
+    text-decoration: none;
+    margin-top: 1rem;
+    font-weight: 500;
+}
+
+.secondary-btn:hover {
+    text-decoration: underline;
+}
+
+
+/* ==== Animaciones ==== */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }

@@ -67,10 +67,10 @@ function get_all_categories($conn) {
 }
 
 /**
- * Obtiene un producto por su ID (sin cambios).
+ * Obtiene un producto por su ID 
  */
 function get_product_by_id($conn, $id) {
-    // ... esta función no necesita cambios ...
+    //
     if (!is_numeric($id)) {
         return null;
     }

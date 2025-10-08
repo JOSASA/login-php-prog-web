@@ -21,20 +21,18 @@ $action = $_POST['action'] ?? null;
 if ($action) {
     switch ($action) {
         case 'login':
-        case 'register':
-        case 'logout':
-            
-            if (function_exists("handle_{$action}")) call_user_func("handle_{$action}", $conn);
+            handle_login($conn);
             break;
-        
-        case 'cart_add':
-           
+        case 'register':
+            handle_register($conn);
+            break;
+        case 'logout':            
+            handle_logout();
+            break;        
+        case 'cart_add':        
             handle_add_to_cart($conn);
             break;
-
-        // ✅ CORRECCIÓN: Se añade el caso para 'cart_update'.
         case 'cart_update':
-            
             handle_update_cart($conn);
             break;
     }
@@ -66,7 +64,9 @@ switch ($route) {
         show_simple_page('carrito');
         break;
     case 'login':
+        show_simple_page($route);
     case 'register':
+        show_simple_page($route);
     case 'contact':
     case 'about':
     case 'checkout':
