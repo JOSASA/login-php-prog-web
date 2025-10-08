@@ -1,12 +1,13 @@
-<?php session_start(); ?>
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
-    <?php include './layouts/head.php'; ?>
+
     <title>Tu Carrito de Compras</title>
 </head>
+
 <body>
-<?php include './layouts/header.php';?>
+
 
     <main class="page-content">
         <div class="container">
@@ -25,30 +26,33 @@
                         foreach ($_SESSION['carrito'] as $id => $producto):
                             $subtotal = $producto['precio'] * $producto['cantidad'];
                             $total += $subtotal;
-                        ?>
+                            ?>
                             <div class="cart-item">
                                 <div class="cart-item-img">
-                                    <img src="<?= htmlspecialchars($producto['imagen']) ?>" alt="<?= htmlspecialchars($producto['nombre']) ?>">
+                                    <img src="<?= htmlspecialchars($producto['imagen']) ?>"
+                                        alt="<?= htmlspecialchars($producto['nombre']) ?>">
                                 </div>
                                 <div class="cart-item-details">
                                     <h3 class="product-title"><?= htmlspecialchars($producto['nombre']) ?></h3>
                                     <p class="product-price">$<?= number_format($producto['precio'], 2) ?></p>
                                 </div>
-                                
+
                                 <div class="cart-item-quantity">
-                                    <form action="./php/actualizar_carrito.php" method="post" class="quantity-form">
+                                    <form action="<?= BASE_URL ?>index.php" method="post" class="quantity-form">
+                                        <input type="hidden" name="action" value="cart_update">
                                         <input type="hidden" name="id" value="<?= $id ?>">
-                                        <button type="submit" name="action" value="restar" class="quantity-btn">-</button>
+                                        <button type="submit" name="update_action" value="restar"
+                                            class="quantity-btn">-</button>
                                         <span class="quantity-value"><?= $producto['cantidad'] ?></span>
-                                        <button type="submit" name="action" value="sumar" class="quantity-btn">+</button>
+                                        <button type="submit" name="update_action" value="sumar" class="quantity-btn">+</button>
                                     </form>
                                 </div>
-                                
                                 <div class="cart-item-subtotal">
                                     $<?= number_format($subtotal, 2) ?>
                                 </div>
                                 <div class="cart-item-remove">
-                                    <a href="./php/eliminar_del_carrito.php?id=<?= $id ?>" class="btn-remove" title="Eliminar Producto">×</a>
+                                    <a href="<?= BASE_URL ?>index.php?route=cart_remove&id=<?= $id ?>" class="btn-remove"
+                                        title="Eliminar Producto">×</a>
                                 </div>
                             </div>
                         <?php endforeach; ?>
@@ -68,13 +72,15 @@
                             <span>Total</span>
                             <span>$<?= number_format($total, 2) ?></span>
                         </div>
-                        <button class="btn-primary btn-checkout" onclick="location.href='checkout.php'" >Proceder al Pago</button>
+                        <button class="btn-primary btn-checkout" onclick="location.href='checkout.php'">Proceder al
+                            Pago</button>
                     </div>
                 </div>
             <?php endif; ?>
         </div>
     </main>
 
-    <?php include './layouts/footer.php'; ?>
+
 </body>
+
 </html>

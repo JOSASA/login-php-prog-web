@@ -1,109 +1,84 @@
 <?php
-session_start();
-// 1. CONEXIÓN Y CONSULTA A LA BASE DE DATOS
-// ===============================================
-require './php/dbconnect.php'; // Incluimos tu archivo de conexión
-
-// Preparamos la consulta para obtener todos los productos
-// Los ordenamos por ID de forma descendente para mostrar los más nuevos primero
-$sql = "SELECT id, nombre, descripcion, precio, stock, imagen FROM productos ORDER BY id DESC";
-
-// Ejecutamos la consulta
-$resultado = $conn->query($sql);
-// ===============================================
+// src/views/pages/shop.php
+// Esta vista espera que el router le pase las variables '$productos' y '$categorias'.
+$categoria_actual = $_GET['categoria'] ?? '';
+$orden_actual = $_GET['orden'] ?? 'newest';
 ?>
+<link rel="stylesheet" href="<?= BASE_URL ?>css/shop.css">
+<main class="shop-page-content">
+    <div class="container">
+        <div class="shop-layout">
 
-<!DOCTYPE html>
-<html lang="es">
-
-<?php include './layouts/head.php'; ?>
-
-<body>
-    <?php include './layouts/header.php'; ?>
-
-    <main class="shop-page-content">
-        <div class="container">
-            <div class="shop-layout">
-                <aside class="sidebar">
-                    <h2 class="sidebar-title">Categorias</h2>
-                    <ul class="category-list">
-                    </ul>
-                </aside>
-
-                <section class="product-area">
-                    <div class="shop-top-bar">
-                        <ul class="shop-filter-menu">
-                        </ul>
-                        <select class="sort-dropdown">
+            <aside class="sidebar">
+                <h2 class="sidebar-title">Categorías</h2>
+                <ul class="category-list">
+                    <li>
+                        <a href="<?= BASE_URL ?>index.php?route=shop" class="<?= empty($categoria_actual) ? 'active' : '' ?>">Todas</a>
+                    </li>
+                    <?php if (isset($categorias) && !empty($categorias)): ?>
+                        <?php foreach ($categorias as $cat): ?>
+                            <li>
+                                <a href="<?= BASE_URL ?>index.php?route=shop&categoria=<?= urlencode($cat) ?>" class="<?= ($categoria_actual === $cat) ? 'active' : '' ?>">
+                                    <?= htmlspecialchars($cat) ?>
+                                </a>
+                            </li>
+                        <?php endforeach; ?>
+                    <?php endif; ?>
+                </ul>
+            </aside>
+            <section class="product-area">
+                <div class="shop-top-bar">
+                    <form action="<?= BASE_URL ?>index.php" method="get" class="sort-form">
+                        <input type="hidden" name="route" value="shop">
+                        <?php if ($categoria_actual): ?>
+                            <input type="hidden" name="categoria" value="<?= htmlspecialchars($categoria_actual) ?>">
+                        <?php endif; ?>
+                        
+                        <select name="orden" class="sort-dropdown" onchange="this.form.submit()">
+                            <option value="newest" <?= $orden_actual === 'newest' ? 'selected' : '' ?>>Más nuevos</option>
+                            <option value="price_asc" <?= $orden_actual === 'price_asc' ? 'selected' : '' ?>>Precio: Menor a Mayor</option>
+                            <option value="price_desc" <?= $orden_actual === 'price_desc' ? 'selected' : '' ?>>Precio: Mayor a Menor</option>
+                            <option value="name_asc" <?= $orden_actual === 'name_asc' ? 'selected' : '' ?>>Nombre: A-Z</option>
                         </select>
-                    </div>
+                    </form>
+                </div>
 
-                    <div class="shop-products-grid">
-                        <?php
-                        // 2. BUCLE PARA MOSTRAR LOS PRODUCTOS
-                        // ===============================================
-                        // Verificamos si la consulta devolvió resultados
-                        if ($resultado->num_rows > 0) {
-                            // Iteramos sobre cada fila (producto)
-                            while ($producto = $resultado->fetch_assoc()) {
-                                ?>
-                                <div class="shop-product-card">
-                                    <div class="card-image-container">
-                                        <img src="<?= htmlspecialchars($producto['imagen']) ?>"
-                                            alt="<?= htmlspecialchars($producto['nombre']) ?>">
-                                        <div class="product-overlay">
-                                            <a href="shop-single.php?id=<?= $producto['id'] ?>"><i class="far fa-eye"></i></a>
-
-                                            <form action="./php/agregar_al_carrito.php" method="post">
+                <div class="shop-products-grid">
+                    <?php if (isset($productos) && $productos->num_rows > 0): ?>
+                        <?php while ($producto = $productos->fetch_assoc()): ?>
+                            <div class="shop-product-card">
+                                <div class="card-image-container">
+                                    <img src="<?= BASE_URL. htmlspecialchars($producto['imagen']) ?>" alt="<?= htmlspecialchars($producto['nombre']) ?>">
+                                </div>
+                                <div class="card-body">
+                                    <a href="<?= BASE_URL ?>index.php?route=shop-single&id=<?= $producto['id'] ?>" class="product-title"><?= htmlspecialchars($producto['nombre']) ?></a>
+                                    <div class="card-bottom">
+                                        <p class="product-price">$<?= number_format($producto['precio'], 2) ?></p>
+                                        <div class="card-action-buttons">
+                                            <a href="<?= BASE_URL ?>index.php?route=shop-single&id=<?= $producto['id'] ?>" class="btn-view-details-icon" title="Ver Detalles">
+                                                <i class="far fa-eye"></i>
+                                            </a>
+                                            <form action="<?= BASE_URL ?>index.php" method="post">
+                                                <input type="hidden" name="action" value="cart_add">
                                                 <input type="hidden" name="id" value="<?= $producto['id'] ?>">
-                                                <input type="hidden" name="nombre"
-                                                    value="<?= htmlspecialchars($producto['nombre']) ?>">
+                                                <input type="hidden" name="nombre" value="<?= htmlspecialchars($producto['nombre']) ?>">
                                                 <input type="hidden" name="precio" value="<?= $producto['precio'] ?>">
                                                 <input type="hidden" name="cantidad" value="1">
-                                                <input type="hidden" name="imagen"
-                                                    value="<?= htmlspecialchars($producto['imagen']) ?>">
-
-                                                <button type="submit" class="cart-button">
+                                                <input type="hidden" name="imagen" value="<?= htmlspecialchars($producto['imagen']) ?>">
+                                                <button type="submit" class="btn-add-cart-alt" title="Agregar al Carrito">
                                                     <i class="fas fa-cart-plus"></i>
                                                 </button>
                                             </form>
                                         </div>
                                     </div>
-                                    <div class="card-body">
-                                        <a href="shop-single.php?id=<?= $producto['id'] ?>"
-                                            class="product-title"><?= htmlspecialchars($producto['nombre']) ?></a>
-                                        <p class="product-price">$<?= number_format($producto['precio'], 2) ?></p>
-                                    </div>
                                 </div>
-                                <?php
-                            } // Fin del bucle while
-                        } else {
-                            // Si no hay productos, mostramos un mensaje
-                            echo "<p>No hay productos disponibles en este momento.</p>";
-                        }
-                        // ===============================================
-                        
-                        // Cerramos la conexión a la base de datos
-                        $conn->close();
-                        ?>
-                    </div>
-
-                    <div class="pagination-container">
-                        <ul class="pagination">
-                            <li class="page-item active"><a class="page-link" href="#">1</a></li>
-                        </ul>
-                    </div>
-                </section>
-            </div>
+                            </div>
+                        <?php endwhile; ?>
+                    <?php else: ?>
+                        <p>No se encontraron productos que coincidan con tu búsqueda.</p>
+                    <?php endif; ?>
+                </div>
+            </section>
         </div>
-    </main>
-
-    <section class="brands-section">
-        <div class="container">
-        </div>
-    </section>
-
-    <?php include './layouts/footer.php'; ?>
-</body>
-
-</html>
+    </div>
+</main>

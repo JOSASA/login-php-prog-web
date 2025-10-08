@@ -1,32 +1,32 @@
 <?php
-// header.php
-// Es crucial iniciar la sesión en cada página que la use
+// src/views/layouts/header.php
 
-require_once 'php/cookies.php'; // Asegúrate de tener la conexión a la base de datos
+// La lógica de cookies y session_start() ya no vive aquí.
+// El router (public/index.php) se encarga de eso.
+
+// Calculamos la cantidad de items en el carrito.
+// Esto es lógica de PRESENTACIÓN, por lo que está bien que esté aquí.
+$items_en_carrito = 0;
+if (!empty($_SESSION['carrito'])) {
+    $items_en_carrito = array_sum(array_column($_SESSION['carrito'], 'cantidad'));
+}
 ?>
-
 <nav class="top-nav">
     </nav>
 
 <header class="main-header">
     <div class="container header-content">
-        <a class="logo" href="index.php">eBrainrot</a>
+        <a class="logo" href="<?= BASE_URL ?>/index.php?route=home">eBrainrot</a>
         <ul class="main-nav">
-            <li><a class="nav-link" href="index.php">Inicio</a></li>
-            <li><a class="nav-link" href="shop.php">Productos</a></li>
-            <li><a class="nav-link" href="contact.php">Contacto</a></li>
-            <li><a class="nav-link" href="about.php">Acerca de</a></li>
+            <li><a class="nav-link" href="<?= BASE_URL ?>/index.php?route=home">Inicio</a></li>
+            <li><a class="nav-link" href="<?= BASE_URL ?>/index.php?route=shop">Productos</a></li>
+            <li><a class="nav-link" href="<?= BASE_URL ?>/index.php?route=contact">Contacto</a></li>
+            <li><a class="nav-link" href="<?= BASE_URL ?>/index.php?route=about">Acerca de</a></li>
         </ul>
-<?php
-$items_en_carrito = 0;
-if (!empty($_SESSION['carrito'])) {
-    // Esto cuenta la cantidad total de productos, no solo los tipos de producto
-    $items_en_carrito = array_sum(array_column($_SESSION['carrito'], 'cantidad'));
-}
-?>
         <div class="header-icons">
             <a class="nav-icon" href="#"><i class="fa fa-fw fa-search"></i></a>
-            <a class="nav-icon cart-icon" href="carrito.php">
+            
+            <a class="nav-icon cart-icon" href="<?= BASE_URL ?>/index.php?route=cart">
                 <i class="fa fa-fw fa-cart-arrow-down"></i>
                 <?php if ($items_en_carrito > 0): ?>
                     <span class="cart-count"><?= $items_en_carrito ?></span>
@@ -34,15 +34,17 @@ if (!empty($_SESSION['carrito'])) {
             </a>
             
             <?php if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] === true): ?>
-                <a class="nav-icon" href="./perfil.php"><i class="fa fa-fw fa-user"></i></a>
+                <a class="nav-icon" href="/index.php?route=profile"><i class="fa fa-fw fa-user"></i></a>
                 <div class="user-info">
                     <span>Bienvenido, <?= htmlspecialchars($_SESSION['name']) ?>!</span>
-                    <a class="my_button" href="./php/logout.php">Cerrar Sesión</a>
+                    <form action="/index.php" method="post" style="display:inline;">
+                         <input type="hidden" name="action" value="logout">
+                         <button type="submit" class="my_button">Cerrar Sesión</button>
+                    </form>
                 </div>
             <?php else: ?>
-                <a class="nav-icon" href="login.php"><i class="fa fa-fw fa-user"></i> Iniciar Sesión</a>
+                <a class="nav-icon" href="/index.php?route=login"><i class="fa fa-fw fa-user"></i> Iniciar Sesión</a>
             <?php endif; ?>
-
         </div>
     </div>
 </header>
