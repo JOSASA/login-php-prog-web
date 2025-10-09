@@ -13,7 +13,7 @@ function handle_login($conn)
     }
 
     // Preparamos la consulta para seleccionar al usuario.
-    if ($stmt = $conn->prepare('SELECT id, password, nombre FROM usuarios WHERE email = ? OR nombre = ?')) {
+    if ($stmt = $conn->prepare('SELECT id, password, username, nombre FROM usuarios WHERE email = ? OR username = ?')) {
         $stmt->bind_param('ss', $_POST['username'], $_POST['username']);
         $stmt->execute();
         
@@ -34,8 +34,8 @@ function handle_login($conn)
                 session_regenerate_id(true);
                 $_SESSION['loggedin'] = true;
                 $_SESSION['id'] = $user['id'];
-                $_SESSION['name'] = $user['nombre'];
-
+                $_SESSION['name'] = !empty($user['nombre']) ? $user['nombre'] : $user['username'];
+// Si el campo 'nombre' no está vacío, úsalo; si no, usa el 'username' como respaldo.
                 require_once '../src/controllers/CartController.php';
                 sync_cart_from_db_on_login($conn, $user['id']);
 
