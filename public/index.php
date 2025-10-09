@@ -25,8 +25,8 @@ if (!isset($_SESSION['loggedin']) && isset($_COOKIE['remember_me_id'], $_COOKIE[
     if ($resultado->num_rows === 1) {
         $user = $resultado->fetch_assoc();
         
-        // 1. Comparamos el token de la cookie con el de la BD de forma segura.
-        // 2. Verificamos que el token no haya expirado.
+        //  Comparamos el token de la cookie con el de la BD de forma segura.
+        //  Verificamos que el token no haya expirado.
         if (hash_equals($user['remember_me_token'], $token) && strtotime($user['token_expiry']) > time()) {
             
             // ¡Token válido! Reconstruimos la sesión del usuario.
@@ -35,7 +35,7 @@ if (!isset($_SESSION['loggedin']) && isset($_COOKIE['remember_me_id'], $_COOKIE[
             $_SESSION['id'] = $user['id'];
             $_SESSION['name'] = !empty($user['nombre']) ? $user['nombre'] : $user['username'];
 
-            // Opcional: Sincronizar el carrito de la BD si es necesario
+            // Sincronizamos el carrito de la BD con la sesión.
             sync_cart_from_db_on_login($conn, $user['id']);
         }
     }
@@ -73,9 +73,9 @@ if ($action) {
     }
     exit();
 }
-// =========================================================================
-// BLOQUE 4: ROUTER PARA VISTAS (PÁGINAS GET)
-// =========================================================================
+
+//  ROUTER PARA VISTAS (PÁGINAS GET)
+
 
 
 require_once '../src/controllers/PageController.php';
@@ -105,7 +105,7 @@ switch ($route) {
         break;
     case 'contact':
     case 'about':
-    // En public/index.php, dentro del switch($route)
+    
 
     case 'checkout':
     // 1. Verificaciones de seguridad (solo usuarios logueados con carrito no vacío).

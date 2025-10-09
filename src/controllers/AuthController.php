@@ -1,10 +1,6 @@
 <?php
-// src/controllers/AuthController.php
 
-/**
- * Procesa el formulario de inicio de sesión.
- * La lógica es la de tu 'autentication.php'.
- */
+
 function handle_login($conn)
 {
     if (!isset($_POST['username'], $_POST['password'])) {
@@ -17,7 +13,7 @@ function handle_login($conn)
         $stmt->bind_param('ss', $_POST['username'], $_POST['username']);
         $stmt->execute();
         
-        // ✨ CAMBIO PRINCIPAL AQUÍ ✨
+        
         // En lugar de bind_result/fetch, obtenemos el resultado como un objeto.
         $resultado = $stmt->get_result();
 
@@ -30,7 +26,7 @@ function handle_login($conn)
             // Ahora usamos el array $user para acceder a los datos.
             if (password_verify($_POST['password'], $user['password'])) {
                 
-                // ¡Login correcto!
+                
                 session_regenerate_id(true);
                 $_SESSION['loggedin'] = true;
                 $_SESSION['id'] = $user['id'];
@@ -44,7 +40,7 @@ function handle_login($conn)
                 $expiry_time = time() + (86400 * 30); // 30 días
                 $expiry_date = date('Y-m-d H:i:s', $expiry_time);
 
-                // b. Guardar token en la base de datos
+                //  Guardar token en la base de datos
                 $update_stmt = $conn->prepare('UPDATE usuarios SET remember_me_token = ?, token_expiry = ? WHERE id = ?');
                 $update_stmt->bind_param('ssi', $token, $expiry_date, $id);
                 $update_stmt->execute();
@@ -66,10 +62,7 @@ function handle_login($conn)
     exit();
 }
 
-/**
- * Procesa el formulario de registro de nuevos usuarios.
- * La lógica es la de tu 'save_user.php'.
- */
+
 function handle_register($conn)
 {
      if (!isset($_POST['username'], $_POST['password'], $_POST['email'], $_POST['phone'])) {
@@ -82,7 +75,7 @@ function handle_register($conn)
     $email = trim($_POST['email']);
     $phone = trim($_POST['phone']);
 
-    // TODO: Añadir validación para ver si el email o username ya existen.
+    //  Añadir validación para ver si el email o username ya existen.
 
     $passwordHash = password_hash($password, PASSWORD_DEFAULT);
 
@@ -98,9 +91,7 @@ function handle_register($conn)
     exit();
 }
 
-/**
- * Cierra la sesión del usuario.
- * La lógica es la de tu 'logout.php'.
+/**Cierra la sesión del usuario.
  */
 function handle_logout()
 {

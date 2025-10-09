@@ -1,12 +1,5 @@
 <?php
-// src/controllers/CartController.php
 
-/**
- * Agrega un producto al carrito (sesión y BD).
- * Contiene la lógica de tu 'agregar_al_carrito.php'.
- */
-
-// src/controllers/CartController.php
 
 /**
  * Agrega un producto al carrito (sesión y BD).

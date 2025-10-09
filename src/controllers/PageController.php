@@ -1,10 +1,5 @@
 <?php
-// src/controllers/PageController.php
 
-/**
- * Muestra la página de inicio.
- * Llama al ProductController para obtener los productos destacados.
- */
 function show_home_page($conn)
 {
     $page_title = "Inicio - eBrainrot";

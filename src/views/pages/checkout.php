@@ -9,7 +9,7 @@
 
         <div class="container checkout-layout">
             <!-- ==========================================
-                 🧍 INFORMACIÓN DE FACTURACIÓN Y ENVÍO
+                  INFORMACIÓN DE FACTURACIÓN Y ENVÍO
             =========================================== -->
             <div class="informacion_facturacion">
                 <h2>Información de facturación</h2>
@@ -103,7 +103,7 @@
             </div>
 
             <!-- ==========================================
-                 💰 RESUMEN DE COMPRA
+                  RESUMEN DE COMPRA
             =========================================== -->
             <div class="resumen-compra">
                 <h2>Resumen de compra</h2>

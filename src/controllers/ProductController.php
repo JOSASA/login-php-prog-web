@@ -1,13 +1,9 @@
 <?php
-// src/controllers/ProductController.php
+
 
 /**
- * Obtiene productos de la BD, ahora con opciones de filtrado y ordenación.
- *
- * @param mysqli $conn La conexión a la base de datos.
- * @param string|null $categoria La categoría por la que filtrar.
- * @param string $orden El criterio para ordenar los productos.
- * @return mysqli_result|false El resultado de la consulta.
+
+
  */
 function get_all_products($conn, $categoria = null, $orden = 'newest') {
     // 1. Empezamos con la consulta base
@@ -47,13 +43,7 @@ function get_all_products($conn, $categoria = null, $orden = 'newest') {
     return $stmt->get_result();
 }
 
-/**
- * Obtiene todas las categorías únicas de la base de datos.
- * Esto es para construir el menú de la barra lateral dinámicamente.
- *
- * @param mysqli $conn La conexión a la base de datos.
- * @return array Un array con los nombres de las categorías.
- */
+
 function get_all_categories($conn) {
     $categorias = [];
     $sql = "SELECT DISTINCT categoria FROM productos ORDER BY categoria ASC";
