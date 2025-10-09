@@ -11,9 +11,10 @@ require_once '../src/config/config.php';
 require_once '../src/controllers/ProductController.php';
 require_once '../src/controllers/AuthController.php';
 require_once '../src/controllers/CartController.php';
+require_once '../src/controllers/OrderController.php';
 
 if (!isset($_SESSION['loggedin']) && isset($_COOKIE['remember_me_id'], $_COOKIE['remember_me_token'])) {
-    // ... lógica de cookies ...
+    
 }
 
 // --- ROUTER PARA ACCIONES (POST) ---
@@ -26,14 +27,23 @@ if ($action) {
         case 'register':
             handle_register($conn);
             break;
-        case 'logout':            
+        case 'logout':
             handle_logout();
-            break;        
-        case 'cart_add':        
+            break;
+        case 'cart_add':
             handle_add_to_cart($conn);
             break;
         case 'cart_update':
             handle_update_cart($conn);
+            break;
+        case 'place_order':
+            handle_place_order($conn);
+            break;
+        case 'update_profile':
+            handle_update_user($conn);
+            break;
+        case 'delete_user':
+            handle_delete_user($conn);
             break;
     }
     exit();
@@ -58,21 +68,67 @@ switch ($route) {
     case 'profile':
         show_profile_page($conn);
         break;
-    
     // Para las páginas simples, llamamos a la función genérica
     case 'cart':
         show_simple_page('carrito');
         break;
     case 'login':
         show_simple_page($route);
+        break;
     case 'register':
         show_simple_page($route);
+        break;
     case 'contact':
     case 'about':
+    // En public/index.php, dentro del switch($route)
+
     case 'checkout':
-        show_simple_page($route);
-        break;
-    
+    // 1. Verificaciones de seguridad (solo usuarios logueados con carrito no vacío).
+    if (!isset($_SESSION['loggedin']) || !$_SESSION['loggedin']) {
+        header('Location: ' . BASE_URL . 'index.php?route=login');
+        exit();
+    }
+    if (empty($_SESSION['carrito'])) {
+        header('Location: ' . BASE_URL . 'index.php?route=shop');
+        exit();
+    }
+
+    $page_title = "Finalizar Compra";
+
+    // Obtener datos del usuario
+    $usuario = get_user_details($conn, $_SESSION['id']);
+
+    // Obtener última dirección del usuario desde pedidos
+    $stmt = $conn->prepare("
+        SELECT calle, numero, colonia, ciudad, estado, codigo_postal, referencias
+        FROM pedidos
+        WHERE usuario_id = ?
+        ORDER BY fecha_pedido DESC
+        LIMIT 1
+    ");
+    $stmt->bind_param("i", $_SESSION['id']);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    $direccion = $result->fetch_assoc() ?? [];
+    $stmt->close();
+
+    // Calcular totales
+    $subtotal = 0;
+    foreach ($_SESSION['carrito'] as $item) {
+        $subtotal += $item['precio'] * $item['cantidad'];
+    }
+    $costo_envio = 150.00;
+    $total = $subtotal + $costo_envio;
+
+    // Llamamos a la vista, pasando **todos los datos listos**
+    show_checkout_page([
+        'usuario' => $usuario,
+        'direccion' => $direccion,
+        'subtotal' => $subtotal,
+        'costo_envio' => $costo_envio,
+        'total' => $total
+    ]);
+    break;
     case 'home':
     default:
         show_home_page($conn);

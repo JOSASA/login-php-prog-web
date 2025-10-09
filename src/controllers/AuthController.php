@@ -72,7 +72,7 @@ function handle_login($conn)
  */
 function handle_register($conn)
 {
-    if (!isset($_POST['username'], $_POST['password'], $_POST['email'], $_POST['phone'])) {
+     if (!isset($_POST['username'], $_POST['password'], $_POST['email'], $_POST['phone'])) {
         header('Location: ' . BASE_URL . 'index.php?route=register&error=datos_faltantes');
         exit();
     }
@@ -86,7 +86,7 @@ function handle_register($conn)
 
     $passwordHash = password_hash($password, PASSWORD_DEFAULT);
 
-    $stmt = $conn->prepare("INSERT INTO usuarios (nombre, password, email, telefono) VALUES (?, ?, ?, ?)");
+    $stmt = $conn->prepare("INSERT INTO usuarios (username, password, email, telefono) VALUES (?, ?, ?, ?)");
     $stmt->bind_param("ssss", $username, $passwordHash, $email, $phone);
 
     if ($stmt->execute()) {
@@ -124,9 +124,76 @@ function handle_logout()
  */
 function get_user_details($conn, $id)
 {
-    $stmt = $conn->prepare("SELECT nombre, email, telefono, creado_en FROM usuarios WHERE id = ?");
+    $stmt = $conn->prepare("SELECT username, nombre, apellido, email, telefono, creado_en FROM usuarios WHERE id = ?");
     $stmt->bind_param("i", $id);
     $stmt->execute();
     $resultado = $stmt->get_result();
     return $resultado->fetch_assoc();
+}
+function handle_update_user($conn)
+{
+    if (!isset($_SESSION['id'])) {
+        header('Location: index.php?route=login');
+        exit();
+    }
+
+    $id = $_SESSION['id'];
+    $nombre = trim($_POST['nombre'] ?? '');
+    $apellido = trim($_POST['apellido'] ?? '');
+    $email = trim($_POST['email'] ?? '');
+    $telefono = trim($_POST['telefono'] ?? '');
+    $direccion = trim($_POST['direccion'] ?? '');
+
+    if (!$nombre || !$email) {
+        header('Location: index.php?route=edit_profile&error=datos_faltantes');
+        exit();
+    }
+
+    // Validar si el correo ya existe
+    $stmt = $conn->prepare("SELECT id FROM usuarios WHERE email = ? AND id != ?");
+    $stmt->bind_param("si", $email, $id);
+    $stmt->execute();
+    $stmt->store_result();
+    if ($stmt->num_rows > 0) {
+        header('Location: index.php?route=edit_profile&error=email_existente');
+        exit();
+    }
+    $stmt->close();
+
+    $stmt = $conn->prepare("UPDATE usuarios 
+                            SET nombre=?, apellido=?, email=?, telefono=?, direccion=? 
+                            WHERE id=?");
+    $stmt->bind_param("sssssi", $nombre, $apellido, $email, $telefono, $direccion, $id);
+
+    if ($stmt->execute()) {
+        header('Location: index.php?route=profile&status=actualizado');
+    } else {
+        header('Location: index.php?route=edit_profile&error=fallo');
+    }
+    $stmt->close();
+    exit();
+}
+
+/**
+ * Elimina la cuenta del usuario.
+ */
+function handle_delete_user($conn)
+{
+    if (!isset($_SESSION['id'])) {
+        header('Location: index.php?route=login');
+        exit();
+    }
+
+    $id = $_SESSION['id'];
+    $stmt = $conn->prepare("DELETE FROM usuarios WHERE id = ?");
+    $stmt->bind_param("i", $id);
+
+    if ($stmt->execute()) {
+        session_destroy();
+        header('Location: index.php?status=cuenta_eliminada');
+    } else {
+        header('Location: index.php?route=profile&error=eliminar');
+    }
+    $stmt->close();
+    exit();
 }

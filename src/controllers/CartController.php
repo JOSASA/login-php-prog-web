@@ -68,7 +68,7 @@ function handle_add_to_cart($conn) {
         }
     }
 
-    header('Location: ' . BASE_URL . 'index.php?route=cart&status=added');
+    header('Location: ' . BASE_URL . 'index.php?route=shop&status=added');
     exit();
 }
 

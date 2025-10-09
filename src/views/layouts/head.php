@@ -12,9 +12,10 @@ $page_title = $page_title ?? 'eBrainrot eCommerce';
     <link rel="stylesheet" href="<?= BASE_URL ?>css/shop.css">
     <link rel="stylesheet" href="<?= BASE_URL ?>css/shop-single.css">
     <link rel="stylesheet" href="<?= BASE_URL ?>css/carrito.css">
-    <link rel="stylesheet" href="<?= BASE_URL ?>css/profile.css">
+    <link rel="stylesheet" href="<?= BASE_URL ?>css/perfil.css">
     <link rel="stylesheet" href="<?= BASE_URL ?>css/contact.css">
     <link rel="stylesheet" href="<?= BASE_URL ?>css/about.css">
+    
     
     <link rel="stylesheet" href="font-awesome/css/fontawesome.css">
     <link rel="stylesheet" href="font-awesome/css/brands.css">

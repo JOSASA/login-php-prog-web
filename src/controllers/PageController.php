@@ -65,19 +65,21 @@ function show_shop_single_page($conn)
  */
 function show_profile_page($conn)
 {
-    if (!isset($_SESSION['loggedin'])) {
+    if (!isset($_SESSION['loggedin']) || !$_SESSION['loggedin']) {
         header('Location: ' . BASE_URL . 'index.php?route=login');
         exit;
     }
-    $page_title = "Mi Perfil";
+
     require_once '../src/controllers/AuthController.php';
     $user = get_user_details($conn, $_SESSION['id']);
+    $page_title = "Mi Perfil";
 
     include_once '../src/views/layouts/head.php';
     include_once '../src/views/layouts/header.php';
-    //include_once '../src/views/pages/profile.php';
+    include_once '../src/views/pages/perfil.php';
     include_once '../src/views/layouts/footer.php';
 }
+
 
 /**
  * Muestra una página simple que no necesita cargar datos desde la BD.
@@ -97,4 +99,13 @@ function show_simple_page($page_name)
         include_once '../src/views/layouts/footer.php';
     }
 
+}
+function show_checkout_page($data = []) {
+    extract($data); // $usuario, $direccion, $subtotal, $costo_envio, $total
+    $page_title = "Checkout";
+
+    include_once '../src/views/layouts/head.php';
+    include_once '../src/views/layouts/header.php';
+    include_once '../src/views/pages/checkout.php';
+    include_once '../src/views/layouts/footer.php';
 }

@@ -1,57 +1,56 @@
-<?php include './php/perfil.php'; ?>
-<!DOCTYPE html>
-<html lang="es">
-<head>
-    <?php include './layouts/head.php'; ?>
-    <link rel="stylesheet" href="css/perfil.css">
-    <title>Mi Perfil - eBrainrot</title>
-</head>
-<body>
-    <?php include './layouts/header.php'; ?>
+<main class="page-content">
+  <div class="container">
+    <h1 class="page-title">Mi Perfil</h1>
 
-    <main class="page-content">
-        <div class="container">
-            <h1 class="page-title">Mi Cuenta</h1>
+    <!-- Botones de acción -->
+    <div class="profile-actions" style="margin-bottom:20px;">
+      <button id="edit-btn" class="btn-secondary">Editar Perfil</button>
+      <a href="index.php?action=logout" class="btn-danger">Cerrar Sesión</a>
+      
+    </div>
 
-            <div class="profile-layout">
-                <aside class="profile-sidebar">
-                    <nav class="profile-nav">
-                        <a href="perfil.php" class="active"><i class="fa fa-user"></i> Mi Perfil</a>
-                        <a href="pedidos.php"><i class="fa fa-box"></i> Mis Pedidos</a>
-                        <a href="cambiar_password.php"><i class="fa fa-lock"></i> Cambiar Contraseña</a>
-                        <a href="logout.php"><i class="fa fa-sign-out-alt"></i> Cerrar Sesión</a>
-                    </nav>
-                </aside>
+    <!-- Formulario de perfil -->
+    <form id="profile-form" action="index.php" method="POST" class="profile-form">
+      <input type="hidden" name="action" value="update_profile">
 
-                <section class="profile-content">
-                    <h2>Información Personal</h2>
-                    
+      <label>Nombre</label>
+      <input type="text" name="nombre" value="<?= htmlspecialchars($user['nombre']) ?>" disabled required>
 
-                    <div class="profile-details">
-                        <div class="detail-item">
-                            <strong>Nombre de Usuario:</strong>
-                            <span><?= htmlspecialchars($user['nombre']) ?></span>
-                        </div>
-                        <div class="detail-item">
-                            <strong>Correo Electrónico:</strong>
-                            <span><?= htmlspecialchars($user['email']) ?></span>
-                        </div>
-                        <div class="detail-item">
-                            <strong>Teléfono:</strong>
-                            <span><?= htmlspecialchars($user['telefono']) ?></span>
-                        </div>
-                        <div class="detail-item">
-                            <strong>Miembro desde:</strong>
-                            <span><?= date("d F, Y", strtotime($user['creado_en'])) ?></span>
-                        </div>
-                    </div>
-                    
-                    <a href="editar_perfil.php" class="btn-primary" style="margin-top: 20px;">Editar Perfil</a>
-                </section>
-            </div>
-        </div>
-    </main>
+      <label>Apellido</label>
+      <input type="text" name="apellido" value="<?= htmlspecialchars($user['apellido']) ?>" disabled>
 
-    <?php include './layouts/footer.php'; ?> 
-</body>
-</html>
+      <label>Correo</label>
+      <input type="email" name="email" value="<?= htmlspecialchars($user['email']) ?>" disabled required>
+
+      <label>Teléfono</label>
+      <input type="text" name="telefono" value="<?= htmlspecialchars($user['telefono']) ?>" disabled>
+
+      <label>Dirección</label>
+      <input type="text" name="direccion" value="<?= htmlspecialchars($user['direccion'] ?? '') ?>" disabled>
+
+      <button id="save-btn" type="submit" class="btn-primary" style="display:none;">Guardar Cambios</button>
+    </form>
+
+    <!-- Eliminar cuenta -->
+    <form action="index.php" method="POST" style="margin-top:20px;">
+      <input type="hidden" name="action" value="delete_user">
+      <button type="submit" class="btn-danger" onclick="return confirm('¿Seguro que deseas eliminar tu cuenta?')">
+        Eliminar cuenta
+      </button>
+    </form>
+  </div>
+
+  <!-- JS para habilitar edición -->
+  <script>
+    const editBtn = document.getElementById('edit-btn');
+    const saveBtn = document.getElementById('save-btn');
+    const inputs = document.querySelectorAll('#profile-form input[type="text"], #profile-form input[type="email"]');
+
+    editBtn.addEventListener('click', (e) => {
+      e.preventDefault();
+      inputs.forEach(input => input.disabled = false);
+      saveBtn.style.display = 'inline-block';
+      editBtn.style.display = 'none';
+    });
+  </script>
+</main>

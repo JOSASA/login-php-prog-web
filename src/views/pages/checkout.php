@@ -1,126 +1,132 @@
 <?php
-session_start();
-require './php/dbconnect.php';
-
-// --- VERIFICACIONES DE SEGURIDAD ---
-/*
-// 1. Si el usuario no ha iniciado sesión, redirigirlo al login.
-if (!isset($_SESSION['usuario_id'])) {
-    header('Location: login.php?error=Debes iniciar sesión para comprar');
-    exit();
-}
-
-// 2. Si el carrito está vacío, redirigirlo a la tienda.
-if (empty($_SESSION['carrito'])) {
-    header('Location: shop.php');
-    exit();
-}
-*/
-// --- OBTENCIÓN DE DATOS ---
-
-// Cargar datos del usuario para pre-rellenar el formulario
-$usuario_id = $_SESSION['id'];
-$stmt = $conn->prepare("SELECT nombre, email, direccion, telefono FROM usuarios WHERE id = ?");
-$stmt->bind_param("i", $usuario_id);
-$stmt->execute();
-$resultado_usuario = $stmt->get_result();
-$usuario = $resultado_usuario->fetch_assoc();
-$stmt->close();
-
-// Dividir el nombre completo en nombre y apellido (si existe)
-$nombre_completo = explode(' ', $usuario['nombre'] ?? '', 2);
-$nombre = $nombre_completo[0];
-$apellido = $nombre_completo[1] ?? '';
-
-
-// --- CÁLCULOS DEL RESUMEN DE COMPRA ---
-
-$subtotal = 0;
-foreach ($_SESSION['carrito'] as $item) {
-    $subtotal += $item['precio'] * $item['cantidad'];
-}
-$envio = 150.00; // Puedes hacerlo más complejo (ej. gratis si subtotal > 1000)
-$descuento = 0.00; // Lógica para cupones podría ir aquí
-$total = $subtotal + $envio - $descuento;
-
+// src/views/pages/checkout.php
+// Variables esperadas: $usuario, $direccion, $subtotal, $costo_envio, $total
 ?>
-<!DOCTYPE html>
-<html lang="es">
-    link
-<?php include './layouts/head.php'; ?>
-<body>
-    <?php include './layouts/header.php'; ?>
-    <form method="POST" action="procesar_pedido.php">
-        <div class="container">
+
+<main class="page-content">
+    <form method="POST" action="<?= BASE_URL ?>index.php">
+        <input type="hidden" name="action" value="place_order">
+
+        <div class="container checkout-layout">
+            <!-- ==========================================
+                 🧍 INFORMACIÓN DE FACTURACIÓN Y ENVÍO
+            =========================================== -->
             <div class="informacion_facturacion">
                 <h2>Información de facturación</h2>
-                <div class="informacion-facturacion-inputs">
+
+                <div class="form-grid">
                     <div>
                         <label>Nombre(s)</label>
-                        <input type="text" name="nombre" placeholder="Nombre" value="<?= htmlspecialchars($nombre) ?>" required>
+                        <input type="text" name="nombre" placeholder="Tu nombre"
+                            value="<?= htmlspecialchars($usuario['nombre'] ?? '') ?>" required>
                     </div>
                     <div>
                         <label>Apellido(s)</label>
-                        <input type="text" name="apellido" placeholder="Apellido" value="<?= htmlspecialchars($apellido) ?>" required>
+                        <input type="text" name="apellido" placeholder="Tus apellidos"
+                            value="<?= htmlspecialchars($usuario['apellido'] ?? '') ?>" required>
                     </div>
                 </div>
-                <div class="informacion-facturacion-inputs" style="grid-template-columns: 1fr;">
-                    <div>
-                        <label>Dirección de Envío</label>
-                        <input type="text" name="direccion" value="<?= htmlspecialchars($usuario['direccion'] ?? '') ?>" required>
-                    </div>
-                </div>
-                <div class="informacion-facturacion-inputs">
+
+                <div class="form-grid">
                     <div>
                         <label>Correo Electrónico</label>
-                        <input type="email" name="email" value="<?= htmlspecialchars($usuario['email'] ?? '') ?>" required>
+                        <input type="email" name="email"
+                            value="<?= htmlspecialchars($usuario['email'] ?? '') ?>" required>
                     </div>
                     <div>
-                        <label>Número De Teléfono</label>
-                        <input type="text" name="telefono" value="<?= htmlspecialchars($usuario['telefono'] ?? '') ?>" required>
+                        <label>Teléfono</label>
+                        <input type="text" name="telefono"
+                            value="<?= htmlspecialchars($usuario['telefono'] ?? '') ?>" required>
                     </div>
                 </div>
-                
-                <h2>Métodos de pago</h2>
-                <div class="metodos_pago">
-                    <div class="card">
-                        <label><input type="radio" name="metodo_pago" value="paypal" checked> PayPal</label>
+
+                <h2>Dirección de Envío</h2>
+
+                <div class="form-row">
+                    <label>Calle</label>
+                    <input type="text" name="calle" placeholder="Ej. Av. Juárez"
+                        value="<?= htmlspecialchars($direccion['calle'] ?? '') ?>" required>
+                </div>
+
+                <div class="form-grid">
+                    <div>
+                        <label>Número</label>
+                        <input type="text" name="numero" placeholder="Ej. 123"
+                            value="<?= htmlspecialchars($direccion['numero'] ?? '') ?>" required>
                     </div>
-                    <div class="card">
-                        <label><input type="radio" name="metodo_pago" value="tarjeta"> Débito/Crédito</label>
+                    <div>
+                        <label>Colonia</label>
+                        <input type="text" name="colonia" placeholder="Ej. Centro"
+                            value="<?= htmlspecialchars($direccion['colonia'] ?? '') ?>" required>
                     </div>
                 </div>
-                
-                <h2>Información Adicional</h2>
-                <label>Notas del pedido <span>(opcional)</span></label>
-                <textarea name="notas"></textarea>
+
+                <div class="form-grid">
+                    <div>
+                        <label>Ciudad</label>
+                        <input type="text" name="ciudad" placeholder="Ej. Guadalajara"
+                            value="<?= htmlspecialchars($direccion['ciudad'] ?? '') ?>" required>
+                    </div>
+                    <div>
+                        <label>Estado</label>
+                        <input type="text" name="estado" placeholder="Ej. Jalisco"
+                            value="<?= htmlspecialchars($direccion['estado'] ?? '') ?>" required>
+                    </div>
+                </div>
+
+                <div class="form-grid">
+                    <div>
+                        <label>Código Postal</label>
+                        <input type="text" name="codigo_postal" placeholder="Ej. 44100"
+                            value="<?= htmlspecialchars($direccion['codigo_postal'] ?? '') ?>" required>
+                    </div>
+                    <div>
+                        <label>Referencias (opcional)</label>
+                        <input type="text" name="referencias" placeholder="Ej. Frente al parque, portón gris"
+                            value="<?= htmlspecialchars($direccion['referencias'] ?? '') ?>">
+                    </div>
+                </div>
+
+                <h2>Método de pago</h2>
+                <select name="metodo_pago" required>
+                    <option value="" disabled selected>Selecciona un método</option>
+                    <option value="Tarjeta">Tarjeta de crédito / débito</option>
+                    <option value="PayPal">PayPal</option>
+                    <option value="Transferencia">Transferencia bancaria</option>
+                    <option value="Contra entrega">Pago contra entrega</option>
+                </select>
+
+                <div class="form-row">
+                    <label>Notas adicionales (opcional)</label>
+                    <textarea name="notas" placeholder="Instrucciones o comentarios adicionales"></textarea>
+                </div>
             </div>
 
+            <!-- ==========================================
+                 💰 RESUMEN DE COMPRA
+            =========================================== -->
             <div class="resumen-compra">
                 <h2>Resumen de compra</h2>
-                <div class="summary-container">
-                    <p>Subtotal</p> 
-                    <span>$<?= number_format($subtotal, 2) ?></span>
-                </div>
-                <div class="summary-container">
-                    <p>Descuento</p>
-                    <span>-$<?= number_format($descuento, 2) ?></span>
-                </div>
-                <div class="summary-container">
-                    <p>Envío</p>
-                    <span>$<?= number_format($envio, 2) ?></span>
-                </div>
-                <div class="summary-container total-row">
-                    <p>Total</p>
-                    <span>$<?= number_format($total, 2) ?></span>
+
+                <div class="summary-calculation">
+                    <div class="summary-row">
+                        <p>Subtotal</p>
+                        <span>$<?= number_format($subtotal, 2) ?></span>
+                    </div>
+                    <div class="summary-row">
+                        <p>Envío</p>
+                        <span>$<?= number_format($costo_envio, 2) ?></span>
+                    </div>
+                    <div class="summary-total">
+                        <p>Total</p>
+                        <span>$<?= number_format($total, 2) ?></span>
+                    </div>
                 </div>
 
-                <input type="hidden" name="total_final" value="<?= $total ?>">
-
-                <button type="submit" class="payment-button">Realizar el pedido</button>
+                <button type="submit" class="btn-primary btn-checkout" >
+                    Realizar pedido
+                </button>
             </div>
         </div>
     </form>
-    
-    </body>
-</html>
+</main>

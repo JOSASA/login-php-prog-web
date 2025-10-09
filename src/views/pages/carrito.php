@@ -72,7 +72,7 @@
                             <span>Total</span>
                             <span>$<?= number_format($total, 2) ?></span>
                         </div>
-                        <button class="btn-primary btn-checkout" onclick="location.href='checkout.php'">Proceder al
+                        <button class="btn-primary btn-checkout" onclick="location.href='<?= BASE_URL ?>index.php?route=checkout'">Proceder al
                             Pago</button>
                     </div>
                 </div>
