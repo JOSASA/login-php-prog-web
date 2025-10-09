@@ -14,7 +14,32 @@ require_once '../src/controllers/CartController.php';
 require_once '../src/controllers/OrderController.php';
 
 if (!isset($_SESSION['loggedin']) && isset($_COOKIE['remember_me_id'], $_COOKIE['remember_me_token'])) {
-    
+    $user_id = $_COOKIE['remember_me_id'];
+    $token = $_COOKIE['remember_me_token'];
+
+    $stmt = $conn->prepare('SELECT id, username, nombre, remember_me_token, token_expiry FROM usuarios WHERE id = ?');
+    $stmt->bind_param('i', $user_id);
+    $stmt->execute();
+    $resultado = $stmt->get_result();
+
+    if ($resultado->num_rows === 1) {
+        $user = $resultado->fetch_assoc();
+        
+        // 1. Comparamos el token de la cookie con el de la BD de forma segura.
+        // 2. Verificamos que el token no haya expirado.
+        if (hash_equals($user['remember_me_token'], $token) && strtotime($user['token_expiry']) > time()) {
+            
+            // ¡Token válido! Reconstruimos la sesión del usuario.
+            session_regenerate_id(true);
+            $_SESSION['loggedin'] = true;
+            $_SESSION['id'] = $user['id'];
+            $_SESSION['name'] = !empty($user['nombre']) ? $user['nombre'] : $user['username'];
+
+            // Opcional: Sincronizar el carrito de la BD si es necesario
+            sync_cart_from_db_on_login($conn, $user['id']);
+        }
+    }
+    $stmt->close();
 }
 
 // --- ROUTER PARA ACCIONES (POST) ---
