@@ -1,0 +1,300 @@
+
+SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
+START TRANSACTION;
+SET time_zone = "+00:00";
+
+
+/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
+/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
+/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
+/*!40101 SET NAMES utf8mb4 */;
+
+--
+-- Base de datos: `ecommerce_php`
+--
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `carrito`
+--
+
+CREATE TABLE `carrito` (
+  `id` int(11) NOT NULL,
+  `usuario_id` int(11) DEFAULT NULL,
+  `producto_id` int(11) NOT NULL,
+  `cantidad` int(11) NOT NULL DEFAULT 1,
+  `creado_en` timestamp NOT NULL DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Volcado de datos para la tabla `carrito`
+--
+
+INSERT INTO `carrito` (`id`, `usuario_id`, `producto_id`, `cantidad`, `creado_en`) VALUES
+(2, 1, 10, 1, '2025-10-07 02:54:13'),
+(3, 1, 9, 2, '2025-10-07 02:54:14'),
+(12, 3, 7, 1, '2025-10-08 22:35:23'),
+(13, 3, 8, 1, '2025-10-08 22:35:30'),
+(14, 2, 9, 1, '2025-10-09 02:28:17'),
+(15, 2, 8, 1, '2025-10-09 02:28:17');
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `categorias`
+--
+
+CREATE TABLE `categorias` (
+  `id_categoria` int(11) NOT NULL,
+  `nombre` varchar(50) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Volcado de datos para la tabla `categorias`
+--
+
+INSERT INTO `categorias` (`id_categoria`, `nombre`) VALUES
+(5, 'Fuente de Poder'),
+(4, 'Memoria RAM'),
+(3, 'Motherboard'),
+(1, 'Procesador'),
+(2, 'Tarjeta de Video');
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `pedidos`
+--
+
+CREATE TABLE `pedidos` (
+  `id` int(11) NOT NULL,
+  `usuario_id` int(11) NOT NULL,
+  `nombre_completo` varchar(150) NOT NULL,
+  `email` varchar(120) NOT NULL,
+  `telefono` varchar(20) NOT NULL,
+  `calle` varchar(100) NOT NULL,
+  `numero` varchar(10) NOT NULL,
+  `colonia` varchar(100) NOT NULL,
+  `ciudad` varchar(100) NOT NULL,
+  `estado` varchar(100) NOT NULL,
+  `codigo_postal` varchar(10) NOT NULL,
+  `referencias` varchar(255) DEFAULT NULL,
+  `total` decimal(10,2) NOT NULL,
+  `metodo_pago` varchar(50) DEFAULT 'no especificado',
+  `notas` text DEFAULT NULL,
+  `fecha_pedido` timestamp NOT NULL DEFAULT current_timestamp(),
+  `state` enum('pendiente','procesando','enviado','completado','cancelado') DEFAULT 'pendiente'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Volcado de datos para la tabla `pedidos`
+--
+
+INSERT INTO `pedidos` (`id`, `usuario_id`, `nombre_completo`, `email`, `telefono`, `calle`, `numero`, `colonia`, `ciudad`, `estado`, `codigo_postal`, `referencias`, `total`, `metodo_pago`, `notas`, `fecha_pedido`, `state`) VALUES
+(1, 2, 'Hugo Lopez', 'admin@admin.com', '6622888158', 'Morelos', '26', 'Los Angeles', 'Hermosillo', 'Sonora', '83377', 'CASA BRIAN', 5400.40, '0', 'ninguna', '2025-10-09 02:26:09', 'pendiente');
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `pedido_detalles`
+--
+
+CREATE TABLE `pedido_detalles` (
+  `id` int(11) NOT NULL,
+  `pedido_id` int(11) NOT NULL,
+  `producto_id` int(11) NOT NULL,
+  `nombre_producto` varchar(150) NOT NULL,
+  `cantidad` int(11) NOT NULL,
+  `precio_unitario` decimal(10,2) NOT NULL,
+  `subtotal` decimal(10,2) GENERATED ALWAYS AS (`cantidad` * `precio_unitario`) STORED
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Volcado de datos para la tabla `pedido_detalles`
+--
+
+INSERT INTO `pedido_detalles` (`id`, `pedido_id`, `producto_id`, `nombre_producto`, `cantidad`, `precio_unitario`) VALUES
+(1, 1, 6, 'Motherboard AMD ASUS B650M-A II PRIME', 1, 3499.90),
+(2, 1, 7, 'Fuente de Poder Cooler Master G750M', 1, 1750.50);
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `productos`
+--
+
+CREATE TABLE `productos` (
+  `id` int(11) NOT NULL,
+  `nombre` varchar(150) NOT NULL,
+  `categoria` varchar(50) NOT NULL,
+  `descripcion` text DEFAULT NULL,
+  `precio` decimal(10,2) NOT NULL,
+  `stock` int(11) NOT NULL DEFAULT 0,
+  `imagen` varchar(255) DEFAULT NULL,
+  `creado_en` timestamp NOT NULL DEFAULT current_timestamp(),
+  `id_categoria` int(11) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Volcado de datos para la tabla `productos`
+--
+
+INSERT INTO `productos` (`id`, `nombre`, `categoria`, `descripcion`, `precio`, `stock`, `imagen`, `creado_en`, `id_categoria`) VALUES
+(6, 'Motherboard AMD ASUS B650M-A II PRIME', 'Motherboard', 'Placa base AMD B650 (Ryzen AM5) micro-ATX con DDR5, PCIe 5.0 M.2...', 3499.90, 25, 'assets/img/componentes/AMD_ASUS_B650M_AII_PRIME.png', '2025-10-07 01:50:54', NULL),
+(7, 'Fuente de Poder Cooler Master G750M', 'Fuente de Poder', 'Fuente de poder 750W 80 Plus Bronze, semi-modular...', 1750.50, 40, 'assets/img/componentes/Fuente_de_Poder_Cooler_Master G_Gold_750_V2.png', '2025-10-07 01:50:54', NULL),
+(8, 'Tarjeta de Video NVIDIA GeForce RTX 5060 Ti', 'Tarjeta de Video', 'Tarjeta gráfica de nueva generación con 8GB GDDR7...', 9800.00, 15, 'assets/img/componentes/NVIDIA_GEFORCE_RTX_5060TI.png', '2025-10-07 01:50:54', NULL),
+(9, 'Procesador AMD Ryzen 5 5600X', 'Procesador', 'Procesador de 6 núcleos y 12 hilos, con una velocidad de hasta 4.6 GHz...', 3199.00, 50, 'assets/img/componentes/Procesador_AMD_Ryzen_5_5600XT.png', '2025-10-07 01:50:54', NULL),
+(10, 'Memoria RAM Acer Predator 32GB (2x16GB) DDR5', 'Memoria RAM', 'Kit de memoria RAM de 32GB (2x16GB) DDR5 a 6000MHz...', 2650.00, 30, 'assets/img/componentes/RAM_ACER_2x16_DDR5(1).png', '2025-10-07 01:50:54', NULL);
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `usuarios`
+--
+
+CREATE TABLE `usuarios` (
+  `id` int(11) NOT NULL,
+  `username` varchar(50) NOT NULL,
+  `nombre` varchar(100) NOT NULL,
+  `apellido` varchar(100) NOT NULL,
+  `email` varchar(100) NOT NULL,
+  `password` varchar(255) NOT NULL,
+  `direccion` text DEFAULT NULL,
+  `telefono` varchar(20) DEFAULT NULL,
+  `creado_en` timestamp NOT NULL DEFAULT current_timestamp(),
+  `remember_me_token` varchar(255) DEFAULT NULL,
+  `token_expiry` datetime DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Volcado de datos para la tabla `usuarios`
+--
+
+INSERT INTO `usuarios` (`id`, `username`, `nombre`, `apellido`, `email`, `password`, `direccion`, `telefono`, `creado_en`, `remember_me_token`, `token_expiry`) VALUES
+(1, 'carlosh', 'carlosh', '', 'mexitwice@gmail.com', '$2y$10$v/QWPINM.1RNsFO3f7gfkuFHIO57KfvxEZ.yT6zDub8PGIofXqZPe', NULL, '662 288 8158', '2025-10-03 16:23:07', '3b9c68d593217df7ca7da0e7b0b51fe009fd806c98add724d724b3a4231b0693', '2025-11-02 18:39:58'),
+(2, 'hugogay', 'Hugo', 'Lopez', 'admin@admin.com', '$2y$10$oHQukxm7wpb0Cl0ksGgmjuC7d.KjyfpGdG6Tss5XLKqDTqC31B12K', '', '6622888158', '2025-10-07 02:58:42', 'd3e8ce3c96bc6b98422794632c42ae9fdd772f14a1176242047be8b7db940875', '2025-11-06 04:01:15'),
+(3, 'AACORTES', 'AACORTES', '', 'promosionues@gmail.com', '$2y$10$Pq5dvkiBshqTI21Fh4AdXe4SG53VmRgz4AgWzU.nEAxEnuvLdAiXm', NULL, '66220008612', '2025-10-08 22:33:39', NULL, NULL);
+
+--
+-- Índices para tablas volcadas
+--
+
+--
+-- Indices de la tabla `carrito`
+--
+ALTER TABLE `carrito`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `usuario_id` (`usuario_id`),
+  ADD KEY `producto_id` (`producto_id`);
+
+--
+-- Indices de la tabla `categorias`
+--
+ALTER TABLE `categorias`
+  ADD PRIMARY KEY (`id_categoria`),
+  ADD UNIQUE KEY `nombre` (`nombre`);
+
+--
+-- Indices de la tabla `pedidos`
+--
+ALTER TABLE `pedidos`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `usuario_id` (`usuario_id`);
+
+--
+-- Indices de la tabla `pedido_detalles`
+--
+ALTER TABLE `pedido_detalles`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `pedido_id` (`pedido_id`),
+  ADD KEY `producto_id` (`producto_id`);
+
+--
+-- Indices de la tabla `productos`
+--
+ALTER TABLE `productos`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `id_categoria` (`id_categoria`);
+
+--
+-- Indices de la tabla `usuarios`
+--
+ALTER TABLE `usuarios`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `email` (`email`);
+
+--
+-- AUTO_INCREMENT de las tablas volcadas
+--
+
+--
+-- AUTO_INCREMENT de la tabla `carrito`
+--
+ALTER TABLE `carrito`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
+
+--
+-- AUTO_INCREMENT de la tabla `categorias`
+--
+ALTER TABLE `categorias`
+  MODIFY `id_categoria` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+
+--
+-- AUTO_INCREMENT de la tabla `pedidos`
+--
+ALTER TABLE `pedidos`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+
+--
+-- AUTO_INCREMENT de la tabla `pedido_detalles`
+--
+ALTER TABLE `pedido_detalles`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+
+--
+-- AUTO_INCREMENT de la tabla `productos`
+--
+ALTER TABLE `productos`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+
+--
+-- AUTO_INCREMENT de la tabla `usuarios`
+--
+ALTER TABLE `usuarios`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+
+--
+-- Restricciones para tablas volcadas
+--
+
+--
+-- Filtros para la tabla `carrito`
+--
+ALTER TABLE `carrito`
+  ADD CONSTRAINT `carrito_ibfk_1` FOREIGN KEY (`usuario_id`) REFERENCES `usuarios` (`id`) ON DELETE CASCADE,
+  ADD CONSTRAINT `carrito_ibfk_2` FOREIGN KEY (`producto_id`) REFERENCES `productos` (`id`) ON DELETE CASCADE;
+
+--
+-- Filtros para la tabla `pedidos`
+--
+ALTER TABLE `pedidos`
+  ADD CONSTRAINT `pedidos_ibfk_1` FOREIGN KEY (`usuario_id`) REFERENCES `usuarios` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Filtros para la tabla `pedido_detalles`
+--
+ALTER TABLE `pedido_detalles`
+  ADD CONSTRAINT `pedido_detalles_ibfk_1` FOREIGN KEY (`pedido_id`) REFERENCES `pedidos` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `pedido_detalles_ibfk_2` FOREIGN KEY (`producto_id`) REFERENCES `productos` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Filtros para la tabla `productos`
+--
+ALTER TABLE `productos`
+  ADD CONSTRAINT `productos_ibfk_1` FOREIGN KEY (`id_categoria`) REFERENCES `categorias` (`id_categoria`);
+COMMIT;
+
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
+/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
