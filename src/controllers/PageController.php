@@ -42,6 +42,25 @@ function show_admin_products_page($conn) {
 
     $conn->close();
 }
+function show_admin_create_product_page($conn) {
+    // 1. ¡SEGURIDAD!
+    check_admin_auth();
+
+    // 2. Lógica e Inclusiones
+    // (Asegúrate que ProductController.php esté incluido en index.php)
+    
+    // 3. Preparación de Datos (Necesitamos las categorías para el <select>)
+    $categorias = get_all_categories($conn); 
+    $page_title = 'Crear Producto';
+
+    // 4. Renderizado de la Vista
+    include_once '../src/views/layouts/admin_head.php';
+    include_once '../src/views/layouts/admin_sidebar.php';
+    include_once '../src/views/pages/admin/create_product_view.php'; // La vista del formulario
+    include_once '../src/views/layouts/admin_footer.php';
+
+    $conn->close();
+}
 function show_admin_users_page($conn) {
     // 1. ¡SEGURIDAD PRIMERO!
     check_admin_auth();
@@ -107,7 +126,7 @@ function show_shop_page($conn)
     $categoria_filtro = $_GET['categoria'] ?? null;
     $orden_filtro = $_GET['orden'] ?? 'newest';
     $productos = get_all_products($conn, $categoria_filtro, $orden_filtro);
-    $categorias = get_all_categories($conn);
+    $categorias = get_all_categories2($conn);
 
     // Construimos la página.
     include_once '../src/views/layouts/head.php';

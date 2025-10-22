@@ -1,5 +1,13 @@
 <div class="main-content">
+    
     <h1>Gestionar Productos</h1>
+    
+    <a href="index.php?route=admin_create_product" class="btn-submit" style="margin-bottom: 20px; display: inline-block; text-decoration: none;">
+        + Añadir Nuevo Producto
+    </a>
+
+    <table class="content-table">
+        </table>
     <table class="content-table">
         <thead>
             <tr>

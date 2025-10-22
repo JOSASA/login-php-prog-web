@@ -12,7 +12,7 @@ require_once '../src/controllers/ProductController.php';
 require_once '../src/controllers/AuthController.php';
 require_once '../src/controllers/CartController.php';
 require_once '../src/controllers/OrderController.php';
-
+require_once '../src/controllers/PageController.php';
 
 // ...
 
@@ -76,6 +76,9 @@ if ($action) {
         case 'delete_user':
             handle_delete_user($conn);
             break;
+        case 'create_product':
+            handle_create_product($conn);
+            break;
     }
     exit();
 }
@@ -84,7 +87,7 @@ if ($action) {
 
 
 
-require_once '../src/controllers/PageController.php';
+
 
 $route = $_GET['route'] ?? 'home';
 
@@ -120,6 +123,9 @@ switch ($route) {
         break;
     case 'admin_orders':
         show_admin_orders_page($conn);
+        break;
+    case 'admin_create_product':
+        show_admin_create_product_page($conn);
         break;
     case 'contact':
     case 'about':
