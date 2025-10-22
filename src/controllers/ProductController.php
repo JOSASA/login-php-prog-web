@@ -7,7 +7,7 @@
  */
 function get_all_products($conn, $categoria = null, $orden = 'newest') {
     // 1. Empezamos con la consulta base
-    $sql = "SELECT id, nombre, precio, imagen FROM productos";
+    $sql = "SELECT id, nombre,categoria,descripcion, precio,stock, imagen FROM productos";
 
     // 2. Añadimos el filtro de categoría si se proporciona
     // Se usa una consulta preparada para evitar inyección SQL con el valor de la categoría.

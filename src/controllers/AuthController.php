@@ -1,64 +1,84 @@
 <?php
 
-
+function check_admin_auth()
+{
+    // session_start() ya debe estar iniciada en index.php
+    if (!isset($_SESSION['is_admin']) || $_SESSION['is_admin'] !== true) {
+        // Si no es admin, fuera de aquí.
+        header('Location: ' . BASE_URL . 'index.php?route=login&error=unauthorized');
+        exit;
+    }
+}
 function handle_login($conn)
 {
     if (!isset($_POST['username'], $_POST['password'])) {
-        header('Location: '.BASE_URL.'index.php?route=login&error=datos_faltantes');
+        header('Location: ' . BASE_URL . 'index.php?route=login&error=datos_faltantes');
         exit();
     }
 
-    // Preparamos la consulta para seleccionar al usuario.
-    if ($stmt = $conn->prepare('SELECT id, password, username, nombre FROM usuarios WHERE email = ? OR username = ?')) {
+    // 1. MODIFICACIÓN: Añadimos 'rol' a la consulta SELECT
+    if ($stmt = $conn->prepare('SELECT id, password, username, nombre, rol FROM usuarios WHERE email = ? OR username = ?')) {
         $stmt->bind_param('ss', $_POST['username'], $_POST['username']);
         $stmt->execute();
         
-        
-        // En lugar de bind_result/fetch, obtenemos el resultado como un objeto.
         $resultado = $stmt->get_result();
 
-        // Verificamos si se encontró exactamente una fila.
         if ($resultado->num_rows === 1) {
-            
-            // Convertimos la fila en un array asociativo.
             $user = $resultado->fetch_assoc();
 
-            // Ahora usamos el array $user para acceder a los datos.
             if (password_verify($_POST['password'], $user['password'])) {
                 
-                
+                // Regeneramos la sesión para todos los inicios de sesión exitosos
                 session_regenerate_id(true);
-                $_SESSION['loggedin'] = true;
-                $_SESSION['id'] = $user['id'];
-                $_SESSION['name'] = !empty($user['nombre']) ? $user['nombre'] : $user['username'];
-// Si el campo 'nombre' no está vacío, úsalo; si no, usa el 'username' como respaldo.
-                require_once '../src/controllers/CartController.php';
-                sync_cart_from_db_on_login($conn, $user['id']);
+                
+                // 2. MODIFICACIÓN: Bifurcación de lógica (Admin vs. Usuario)
+                if ($user['rol'] === 'admin') {
+                    
+                    // --- LÓGICA DE ADMINISTRADOR ---
+                    $_SESSION['is_admin'] = true; // La sesión que usa tu admin/admin_check.php
+                    $_SESSION['id'] = $user['id'];
+                    $_SESSION['name'] = !empty($user['nombre']) ? $user['nombre'] : $user['username'];
+                    
+                    // Redirigir al dashboard de admin que creamos
+                    // Asegúrate que BASE_URL apunte a la raíz de tu proyecto
+                    header('Location: ' . BASE_URL . 'index.php?route=dashboard');
+                    exit();
 
-                if (isset($_POST['rememberme'])) {
-                $token = bin2hex(random_bytes(32)); 
-                $expiry_time = time() + (86400 * 30); // 30 días
-                $expiry_date = date('Y-m-d H:i:s', $expiry_time);
+                } else {
+                    
+                    // --- LÓGICA DE USUARIO REGULAR (Tu código original) ---
+                    $_SESSION['loggedin'] = true;
+                    $_SESSION['id'] = $user['id'];
+                    $_SESSION['name'] = !empty($user['nombre']) ? $user['nombre'] : $user['username'];
+                    
+                    require_once '../src/controllers/CartController.php';
+                    sync_cart_from_db_on_login($conn, $user['id']);
 
-                //  Guardar token en la base de datos
-                $update_stmt = $conn->prepare('UPDATE usuarios SET remember_me_token = ?, token_expiry = ? WHERE id = ?');
-                $update_stmt->bind_param('ssi', $token, $expiry_date, $id);
-                $update_stmt->execute();
-                $update_stmt->close();
+                    if (isset($_POST['rememberme'])) {
+                        $token = bin2hex(random_bytes(32)); 
+                        $expiry_time = time() + (86400 * 30); // 30 días
+                        $expiry_date = date('Y-m-d H:i:s', $expiry_time);
 
-                // c. Guardar cookies en navegador (solo id + token, nunca la contraseña)
-                setcookie('remember_me_id', $id, $expiry_time, '/', '', false, true); 
-                setcookie('remember_me_token', $token, $expiry_time, '/', '', false, true);
+                        // 3. CORRECCIÓN: Usar $user['id'] en lugar de $id (que no estaba definido)
+                        $update_stmt = $conn->prepare('UPDATE usuarios SET remember_me_token = ?, token_expiry = ? WHERE id = ?');
+                        $update_stmt->bind_param('ssi', $token, $expiry_date, $user['id']); 
+                        $update_stmt->execute();
+                        $update_stmt->close();
+
+                        setcookie('remember_me_id', $user['id'], $expiry_time, '/', '', false, true); 
+                        setcookie('remember_me_token', $token, $expiry_time, '/', '', false, true);
+                    }
+
+                    header('Location: ' . BASE_URL . 'index.php?route=home');
+                    exit();
                 }
 
-                header('Location: '.BASE_URL.'index.php?route=home');
-                exit();
             }
         }
     }
     
     // Si algo falla (usuario no encontrado o contraseña incorrecta).
-    header('Location: '.BASE_URL.'index.php?route=login&error=credenciales');
+    header('Location: ' . BASE_URL . 'index.php?route=login&error=credenciales');
     exit();
 }
 

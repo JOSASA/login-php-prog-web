@@ -1,5 +1,85 @@
 <?php
 
+
+//mostrar dasboard del admin
+function show_dashboard_page($conn) {
+    // 1. ¡SEGURIDAD PRIMERO!
+    check_admin_auth(); 
+
+    // 2. Lógica e Inclusiones
+    require_once '../src/controllers/dasboardController.php'; // ¡Corrige el nombre si lo cambiaste!
+
+    // 3. Preparación de Datos
+    $stats = get_dashboard_stats($conn);
+    $page_title = 'Dashboard'; 
+
+    // 4. Renderizado de la Vista (usando las nuevas plantillas admin)
+    include_once '../src/views/layouts/admin_head.php';
+    include_once '../src/views/layouts/admin_sidebar.php';
+    include_once '../src/views/pages/admin/dashboard_view.php'; // La vista específica
+    include_once '../src/views/layouts/admin_footer.php';
+
+    $conn->close();
+}
+function show_admin_products_page($conn) {
+    // 1. ¡SEGURIDAD PRIMERO!
+    check_admin_auth();
+
+    // 2. Lógica e Inclusiones
+    // (ProductController ya está cargado en index.php, pero es bueno ser explícito)
+    require_once '../src/controllers/ProductController.php'; 
+
+    // 3. Preparación de Datos
+    // Usamos la función que ya tenías, sin filtros
+    $products = get_all_products($conn, null, 'newest'); 
+    $page_title = 'Gestionar Productos';
+
+    // 4. Renderizado de la Vista
+    include_once '../src/views/layouts/admin_head.php';
+    include_once '../src/views/layouts/admin_sidebar.php';
+    include_once '../src/views/pages/admin/manage_products_view.php'; // La vista de productos
+    include_once '../src/views/layouts/admin_footer.php';
+
+    $conn->close();
+}
+function show_admin_users_page($conn) {
+    // 1. ¡SEGURIDAD PRIMERO!
+    check_admin_auth();
+
+    // 2. Lógica e Inclusiones
+    require_once '../src/controllers/UserController.php'; 
+
+    // 3. Preparación de Datos
+    $users = get_all_users($conn); 
+    $page_title = 'Gestionar Usuarios';
+
+    // 4. Renderizado de la Vista
+    include_once '../src/views/layouts/admin_head.php';
+    include_once '../src/views/layouts/admin_sidebar.php';
+    include_once '../src/views/pages/admin/manage_users_view.php'; // La vista de usuarios
+    include_once '../src/views/layouts/admin_footer.php';
+
+    $conn->close();
+}
+function show_admin_orders_page($conn) {
+    // 1. ¡SEGURIDAD PRIMERO!
+    check_admin_auth();
+
+    // 2. Lógica e Inclusiones
+    require_once '../src/controllers/UserController.php'; 
+    
+    // 3. Preparación de Datos
+    $orders = get_all_orders_admin($conn); 
+    $page_title = 'Gestionar Pedidos';
+
+    // 4. Renderizado de la Vista
+    include_once '../src/views/layouts/admin_head.php';
+    include_once '../src/views/layouts/admin_sidebar.php';
+    include_once '../src/views/pages/admin/manage_orders_view.php'; // La vista de pedidos
+    include_once '../src/views/layouts/admin_footer.php';
+
+    $conn->close();
+}
 function show_home_page($conn)
 {
     $page_title = "Inicio - eBrainrot";

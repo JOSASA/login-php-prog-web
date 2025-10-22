@@ -13,11 +13,15 @@ require_once '../src/controllers/AuthController.php';
 require_once '../src/controllers/CartController.php';
 require_once '../src/controllers/OrderController.php';
 
-if (!isset($_SESSION['loggedin']) && isset($_COOKIE['remember_me_id'], $_COOKIE['remember_me_token'])) {
+
+// ...
+
+if (!isset($_SESSION['loggedin']) && !isset($_SESSION['is_admin']) && isset($_COOKIE['remember_me_id'], $_COOKIE['remember_me_token'])) {
     $user_id = $_COOKIE['remember_me_id'];
     $token = $_COOKIE['remember_me_token'];
 
-    $stmt = $conn->prepare('SELECT id, username, nombre, remember_me_token, token_expiry FROM usuarios WHERE id = ?');
+    // MODIFICACIÓN: Añade 'rol' al SELECT
+    $stmt = $conn->prepare('SELECT id, username, nombre, rol, remember_me_token, token_expiry FROM usuarios WHERE id = ?');
     $stmt->bind_param('i', $user_id);
     $stmt->execute();
     $resultado = $stmt->get_result();
@@ -25,18 +29,20 @@ if (!isset($_SESSION['loggedin']) && isset($_COOKIE['remember_me_id'], $_COOKIE[
     if ($resultado->num_rows === 1) {
         $user = $resultado->fetch_assoc();
         
-        //  Comparamos el token de la cookie con el de la BD de forma segura.
-        //  Verificamos que el token no haya expirado.
         if (hash_equals($user['remember_me_token'], $token) && strtotime($user['token_expiry']) > time()) {
             
-            // ¡Token válido! Reconstruimos la sesión del usuario.
             session_regenerate_id(true);
-            $_SESSION['loggedin'] = true;
             $_SESSION['id'] = $user['id'];
             $_SESSION['name'] = !empty($user['nombre']) ? $user['nombre'] : $user['username'];
 
-            // Sincronizamos el carrito de la BD con la sesión.
-            sync_cart_from_db_on_login($conn, $user['id']);
+            // MODIFICACIÓN: Revisa el rol para crear la sesión correcta
+            if ($user['rol'] === 'admin') {
+                $_SESSION['is_admin'] = true;
+            } else {
+                $_SESSION['loggedin'] = true;
+                // Sincronizamos el carrito solo para usuarios normales
+                sync_cart_from_db_on_login($conn, $user['id']);
+            }
         }
     }
     $stmt->close();
@@ -102,6 +108,18 @@ switch ($route) {
         break;
     case 'register':
         show_simple_page($route);
+        break;
+    case 'dashboard':
+        show_dashboard_page($conn);
+        break;
+    case 'admin_products':
+        show_admin_products_page($conn);
+        break;
+    case 'admin_users':
+        show_admin_users_page($conn);
+        break;
+    case 'admin_orders':
+        show_admin_orders_page($conn);
         break;
     case 'contact':
     case 'about':
